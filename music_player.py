@@ -18,14 +18,19 @@ class NoteRatio:
 @dataclass
 class Note:
     id_number: int
+    beat: int
+    duration_in_beats: int
     value: NoteRatio | Hertz
 
 
-NoteCommand: type = Note | 
+@dataclass
+class Melody:
+    tempo: float
+    notes: list[Note]
 
 
 class MusicAsRatios:
-    def __init__(self, notes: list[object]):
+    def __init__(self, notes: list[Melody]):
         # TODO: VALIDATE NOTES
         self.notes = notes
 
