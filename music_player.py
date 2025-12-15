@@ -52,6 +52,9 @@ def transform_music(music_as_ratios: MusicAsRatios) -> list[FrequencyCommand]:
     pass
 """
 
+SAMPLE_RATE = 14400
+
+
 @dataclass
 class Melody:
     beats_per_minute: float
