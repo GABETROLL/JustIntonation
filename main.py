@@ -3,34 +3,37 @@ Continuously plays frequencies dictated in the terminal:
 
 new: <frequency to start playing>
 old: <frequency to stop playing>
-"""
+frame + frames - frequency_command.command_frame"""
 import sounddevice
 import numpy
 from matplotlib import pyplot
 from time import sleep
+from dataclasses import dataclass
+from music_player import *
 
+FramesLeft: type = int
 
 SAMPLE_RATE = 44100
-frequencies = {800: [0, True]}
-# hz: (start_index, active)
+frequencies: dict[Hertz, FramesLeft]  = {}
+
+frequency_commands: list[FrequencyCommand] = [
+    FrequencyCommand(0, START, 300, 1),
+]
+current_command_index: int = 0
+frame: int = 0
 
 
-def sine_wave(start_frame: int, sound_playing_frames: int, frames: int, hz: float):
+def sine_wave(start_frame: int, duration_in_frames: int, hz: float, amplitude: float) -> numpy.ndarray:
     """
     Assuming that a sine wave frequency of `hz` Hz has been playing at a "frame rate", or sample rate,
     of `SAMPLE_RATE` for `start_frame` frames until now, this function returns the air pressure values for
-    the upcoming `frames` frames, where the frequency only plays for `sound_playing_frames`, cutting off abruptly.
+    the upcoming `duration_in_frames` frames.
 
-    The result should be returned as a numpy ndarray with shape `(frames, 1)`.
+    The result should be returned as a numpy ndarray with shape `(duration_in_frames, 1)`.
     """
-    result_frames = numpy.zeros((frames, 1))
-
-    for result_frame_index in range(sound_playing_frames):
-        objective_frame_index: int = start_frame + result_frame_index
-        sin_input: float = objective_frame_index * 2 * numpy.pi * hz / SAMPLE_RATE
-        result_frames[result_frame_index] = numpy.sin(sin_input)
-
-    return result_frames
+    return numpy.sin(
+        numpy.arange(start_frame, start_frame + duration_in_frames) / SAMPLE_RATE * 2 * numpy.pi * frequency
+    ) * amplitude
 
 
 def almost_zero(x: float):
@@ -42,31 +45,43 @@ def almost_zero(x: float):
 
 def callback(outdata: numpy.ndarray, frames: int, time, status) -> None:
     """writes sound output to 'outdata' from sound_queue."""
-    # params may need annotations... :/
-    result = None
+    result = numpy.zeros((frames, 1))
 
-    for frequency, (start_index, active) in frequencies.copy().items():
-        wave = sine_wave(start_index, frames, frames, frequency)
+    while current_command_index < len(frequency_commands):
+        frequency_command: FrequencyCommand = frequency_commands[current_command_index]
 
-        if not active:
-            for index, value in enumerate(wave):
-                if almost_zero(value):
+        if not (frame <= frequency_command.command_frame < frame + frames):
+            break
 
-                    wave = sine_wave(start_index, index, frames, frequency)
-                    frequencies.pop(frequency)
+        frame_index_in_block: int = frequency_command.command_frame - frame
 
-                    break
+        if duration < frame + frames - frequency_command.command_frame:
+            frequency_wave: numpy.ndarray = sine_wave(
+                frequency_command.command_frame,
+                frequency_command.duration,
+                frequency_command.frequency,
+                frequency_command.amplitude,
+            )
+
+            result[frame_index_in_block:frame_index_in_block + duration] += frequency_wave
         else:
-            frequencies[frequency][0] += frames
+            current_duration: int = frame + frames - frequency_command.command_frame
 
-        if result is None:
-            result = wave
-        else:
-            result += wave
+            frequency_wave: numpy.ndarray = sine_wave(
+                frequency_command.command_frame,
+                current_duration,
+                frequency_command.frequency,
+                frequency_command.amplitude,
+            )
 
-    if result is None:
-        result = numpy.arange(frames) / SAMPLE_RATE
-        result = result.reshape(-1, 1)
+            result[frame_index_in_block:frame + frames] += frequency_wave
+
+            frequencies[frequency_command.frequency] = frequency_command.duration - current_duration
+
+        current_command_index += 1
+
+    for frequency, frames_left in frequencies.items():
+        pass
 
     outdata[:] = result
 
