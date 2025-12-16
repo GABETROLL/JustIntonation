@@ -1,5 +1,6 @@
 import numpy
 from dataclasses import dataclass
+from typing import Callable
 
 Hertz: type = float
 
@@ -61,7 +62,45 @@ class Melody:
     notes: list[list[Hertz]]
 
 
-def render_wave(melody: Melody, sample_rate: int) -> numpy.ndarray:
+def domain(frequency: Hertz, sample_rate: int, start_sample_index: int, end_sample_index: int) -> numpy.ndarray:
+    return numpy.arange(start_sample_index, end_sample_index) * 2 * numpy.pi * frequency / sample_rate
+
+
+def trumpet(frequency: Hertz, sample_rate: int, start_sample_index: int, end_sample_index: int) -> numpy.ndarray:
+    return numpy.sin(
+        domain(frequency, sample_rate, start_sample_index, end_sample_index)
+    ) + numpy.sin(
+        domain(frequency * 2, sample_rate, start_sample_index, end_sample_index)
+    ) / 2 + numpy.sin(
+        domain(frequency * 3, sample_rate, start_sample_index, end_sample_index)
+    ) / 3 + numpy.sin(
+        domain(frequency * 4, sample_rate, start_sample_index, end_sample_index)
+    ) / 4 + numpy.sin(
+        domain(frequency * 5, sample_rate, start_sample_index, end_sample_index)
+    ) / 5
+
+
+def other(frequency: Hertz, sample_rate: int, start_sample_index: int, end_sample_index: int) -> numpy.ndarray:
+    return numpy.sin(
+        domain(frequency, sample_rate, start_sample_index, end_sample_index)
+    ) + numpy.sin(
+        domain(frequency * 3, sample_rate, start_sample_index, end_sample_index)
+    ) / 3 + numpy.sin(
+        domain(frequency * 5, sample_rate, start_sample_index, end_sample_index)
+    ) / 5 + numpy.sin(
+        domain(frequency * 7, sample_rate, start_sample_index, end_sample_index)
+    ) / 7 + numpy.sin(
+        domain(frequency * 9, sample_rate, start_sample_index, end_sample_index)
+    ) / 9
+
+
+def sine_wave(frequency: Hertz, sample_rate: int, start_sample_index: int, end_sample_index: int) -> numpy.ndarray:
+    return numpy.sin(domain(frequency, sample_rate, start_sample_index, end_sample_index))
+
+
+def render_wave(melody: Melody, sample_rate: int, voice: Callable[[Hertz, int, int, int], numpy.ndarray]) -> numpy.ndarray:
+    print(melody.notes)
+
     beats_per_second: float = melody.beats_per_minute / 60
     samples_per_beat_rounded: int = int(sample_rate / beats_per_second)
 
@@ -73,14 +112,7 @@ def render_wave(melody: Melody, sample_rate: int) -> numpy.ndarray:
 
         # start the frequency as it had always been playing
         for frequency in beat:
-            print(result[start_sample_index:end_sample_index].shape)
-
-            beat_wave: numpy.ndarray = numpy.sin(
-                numpy.arange(start_sample_index, end_sample_index) / sample_rate * 2 * numpy.pi * frequency
-            )
-
-            print(beat_wave.shape)
-
+            beat_wave: numpy.ndarray = voice(frequency, sample_rate, start_sample_index, end_sample_index)
             result[start_sample_index:end_sample_index] += beat_wave
 
     return result
