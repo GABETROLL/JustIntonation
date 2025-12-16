@@ -2,7 +2,7 @@ import numpy
 from dataclasses import dataclass
 from typing import Callable
 
-Hertz: type = float
+Hertz: type = int
 
 """
 @dataclass
@@ -63,7 +63,7 @@ class Melody:
 
 
 def domain(frequency: Hertz, sample_rate: int, start_sample_index: int, end_sample_index: int) -> numpy.ndarray:
-    return numpy.arange(start_sample_index, end_sample_index) * 2 * numpy.pi * frequency / sample_rate
+    return numpy.arange(start_sample_index, end_sample_index) % sample_rate * frequency * 2 / sample_rate * numpy.pi  
 
 
 def trumpet(frequency: Hertz, sample_rate: int, start_sample_index: int, end_sample_index: int) -> numpy.ndarray:

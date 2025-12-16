@@ -18,9 +18,8 @@ C# => 1080
 ...
 """
 from music_player import *
-from frequency_ratios import make_co_prime
 
-HOME = D3 = 288
+HOME = D3 = 144
 B2 = int(D3 * 5 / 6)
 G2 = int(D3 * 2 / 3)
 F_SHARP_3 = int(D3 * 5 / 4)
@@ -44,6 +43,7 @@ F_SHARP_4 = F_SHARP_3 << 1
 G4 = G2 << 2
 A4 = A3 << 1
 B4 = B2 << 2
+C5 = int(G4 * 4 / 3)
 C_SHARP_5 = C_SHARP_4 << 1
 
 D5 = D3 << 2
@@ -427,25 +427,79 @@ melody = Melody(
         [E3, A4, C_SHARP_5],
         [E3, A4, C_SHARP_5],
 
-        [D3, A3, D4, A5],
-        [D3, A3, D4, A5],
-        [D3, A3, D4, A5],
-        [D3, A3, D4, A5],
-        [D3, A3, D4, A5],
-        [D3, A3, D4, A5],
-        [D3, A3, D4, A5],
-        [D3, A3, D4, A5],
-        [D3, A3, D4, A5],
-        [D3, A3, D4, A5],
+        [D3, F_SHARP_5],
+        [D3, F_SHARP_5],
+        [A3, F_SHARP_5],
+        [A3, F_SHARP_5],
+        [D4, F_SHARP_5],
+        [D4, F_SHARP_5],
+        [A3, F_SHARP_5],
+        [A3, F_SHARP_5],
 
-        [D3, A3, D4, F_SHARP_5, A5, D6], 
-        [D3, A3, D4, F_SHARP_5, A5, D6], 
-        [D3, A3, D4, F_SHARP_5, A5, D6], 
-        [D3, A3, D4, F_SHARP_5, A5, D6], 
-        [D3, A3, D4, F_SHARP_5, A5, D6], 
-        [D3, A3, D4, F_SHARP_5, A5, D6], 
-        [D3, A3, D4, F_SHARP_5, A5, D6], 
-      [D3, A3, D4, F_SHARP_5, A5, D6], 
+        [A2, F_SHARP_5],
+        [A2, F_SHARP_5],
+        [E3, F_SHARP_5],
+        [E3, G5],
+        [A3, F_SHARP_5],
+        [A3, F_SHARP_5],
+        [E3, E5],
+        [E3, E5],
+
+        [B2, D5],
+        [B2, D5],
+        [F_SHARP_3, D5],
+        [F_SHARP_3, D5],
+        [B3, D5],
+        [B3, D5],
+        [F_SHARP_3, D5],
+        [F_SHARP_3, D5],
+
+        [F_SHARP_2, D5],
+        [F_SHARP_2, D5],
+        [C_SHARP_3, D5],
+        [C_SHARP_3, E5],
+        [F_SHARP_3, D5],
+        [F_SHARP_3, D5],
+        [C_SHARP_3, C5],
+        [C_SHARP_3, C5],
+
+        [G2, B4],
+        [G2, B4],
+        [D3, B4],
+        [D3, B4],
+        [G3, C_SHARP_5],
+        [G3, C_SHARP_5],
+        [D3, C_SHARP_5],
+        [D3, C_SHARP_5],
+
+        [D2, D5],
+        [D2, D5],
+        [A2, D5],
+        [A2, D5],
+        [D3, A4],
+        [D3, A4],
+        [A2, A4],
+        [A2, A4],
+
+        [G2, D5],
+        [G2, D5],
+        [D3, C5],
+        [D3, C5],
+        [G3, B4],
+        [G3, B4],
+        [D3, C5],
+        [D3, C5],
+
+        [A2, C_SHARP_5],
+        [A2, C_SHARP_5],
+        [E3, C_SHARP_5],
+        [E3, C_SHARP_5],
+        [A3, C_SHARP_5],
+        [A3, C_SHARP_5],
+        [E3, C_SHARP_5],
+        [E3, C_SHARP_5],
+
+        [D3, A3, D4, F_SHARP_5, A5, D6],
     ],
 )
 
@@ -455,8 +509,12 @@ melody = Melody(
     if 11 in simplified
 ))"""
 
+
+# print(C_SHARP_2, D2, E2, F_SHARP_2, G2, A2, B2, C_SHARP_3, D3, E3, F_SHARP_3, G3, A3, B3, C_SHARP_4, D4, E4, F_SHARP_4, G4, A4, B4, C_SHARP_5, D5, E5, F_SHARP_5, G5, A5, B5, C_SHARP_6, D6)
+
+
 wave: numpy.ndarray = render_wave(
-  melody,
-  SAMPLE_RATE,
-  other,
+    melody,
+    SAMPLE_RATE,
+    sine_wave,
 )

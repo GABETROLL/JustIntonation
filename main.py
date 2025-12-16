@@ -1,9 +1,3 @@
-"""
-Continuously plays frequencies dictated in the terminal:
-
-new: <frequency to start playing>
-old: <frequency to stop playing>
-frame + frames - frequency_command.command_frame"""
 import sounddevice
 import numpy
 from music_player import *
