@@ -516,5 +516,5 @@ melody = Melody(
 wave: numpy.ndarray = render_wave(
     melody,
     SAMPLE_RATE,
-    sine_wave,
+    trumpet,
 )

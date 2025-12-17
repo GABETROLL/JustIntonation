@@ -64,7 +64,8 @@ class Melody:
 
 
 def trumpet(domain: numpy.ndarray) -> numpy.ndarray:
-    return numpy.sin(domain) + numpy.sin(2 * domain) / 2
+    return numpy.sin(domain) + numpy.sin(2 * domain) / 2 + numpy.sin(3 * domain) / 3 \
+        + numpy.sin(4 * domain) / 4 + numpy.sin(5 * domain) / 5 + numpy.sin(6 * domain) / 6
 
 
 def other(domain: numpy.ndarray) -> numpy.ndarray:
@@ -83,9 +84,9 @@ def render_wave(melody: Melody, sample_rate: int, voice: Callable[[numpy.ndarray
     beats: int = len(melody.notes)
 
     result: numpy.ndarray = numpy.zeros((samples_per_beat_rounded * beats,))
-    one_hertz_wave: numpy.ndarray = voice(
+    """one_hertz_wave: numpy.ndarray = voice(
         numpy.arange(0, samples_per_beat_rounded ** 2 * beats) * 2 * numpy.pi / sample_rate
-    )
+    )"""
 
     # print(f"result: {result.shape}, one_hertz_wave: {one_hertz_wave.shape}")
 
@@ -95,9 +96,15 @@ def render_wave(melody: Melody, sample_rate: int, voice: Callable[[numpy.ndarray
 
         # start the frequency as it had always been playing
         for frequency in beat:
-            beat_wave: numpy.ndarray = one_hertz_wave[:samples_per_beat_rounded * frequency:frequency]
+            # print(f"{frequency = }")
+            one_hertz_wave: numpy.ndarray = voice(
+                numpy.arange(start_sample_index * frequency, end_sample_index * frequency) * 2 * (numpy.pi / sample_rate)
+            )
+            beat_wave: numpy.ndarray = one_hertz_wave[::frequency]
 
-            # print(f"Difference: {end_sample_index - start_sample_index}, beat_wave: {beat_wave.shape}, range: {len(range(0, samples_per_beat_rounded * frequency, frequency))}")
+            # print(f"Difference: {end_sample_index - start_sample_index}")
+            # print(f"one_hertz_wave: {one_hertz_wave.shape}, beat_wave: {beat_wave.shape}")
+            # print(f"range: {len(range(start_sample_index * frequency, end_sample_index * frequency, frequency))}")
 
             result[start_sample_index:end_sample_index] += beat_wave
 
