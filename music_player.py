@@ -1,6 +1,7 @@
 import numpy
 from dataclasses import dataclass
 from typing import Callable
+from matplotlib import pyplot
 
 Hertz: type = int
 
@@ -63,7 +64,11 @@ class Melody:
 
 
 def domain(frequency: Hertz, sample_rate: int, start_sample_index: int, end_sample_index: int) -> numpy.ndarray:
-    return numpy.arange(start_sample_index, end_sample_index) % sample_rate * frequency * 2 / sample_rate * numpy.pi  
+    return numpy.linspace(
+        start_sample_index * 2 * frequency / sample_rate,
+        (end_sample_index - 1) * 2 * frequency / sample_rate,
+        end_sample_index - start_sample_index,
+    ) * numpy.pi
 
 
 def trumpet(frequency: Hertz, sample_rate: int, start_sample_index: int, end_sample_index: int) -> numpy.ndarray:
@@ -95,16 +100,25 @@ def other(frequency: Hertz, sample_rate: int, start_sample_index: int, end_sampl
 
 
 def sine_wave(frequency: Hertz, sample_rate: int, start_sample_index: int, end_sample_index: int) -> numpy.ndarray:
-    return numpy.sin(domain(frequency, sample_rate, start_sample_index, end_sample_index))
+    numpy.sin(numpy.arange(start_sample_index, end_sample_index) / sample_rate)
+
+    big_wave: numpy.ndarray = numpy.sin(domain)
+    step: int = sample_rate // frequency
+    return big_wave[::step]   
 
 
 def render_wave(melody: Melody, sample_rate: int, voice: Callable[[Hertz, int, int, int], numpy.ndarray]) -> numpy.ndarray:
-    print(melody.notes)
-
     beats_per_second: float = melody.beats_per_minute / 60
     samples_per_beat_rounded: int = int(sample_rate / beats_per_second)
 
-    result: numpy.ndarray = numpy.zeros((samples_per_beat_rounded * len(melody.notes),))
+    beats: int = len(melody.notes)
+
+    result: numpy.ndarray = numpy.zeros((samples_per_beat_rounded * beats,))
+    one_hertz_wave: numpy.ndarray = numpy.sin(
+        numpy.arange(0, samples_per_beat_rounded ** 2 * beats) * 2 * numpy.pi / sample_rate
+    )
+
+    # print(f"result: {result.shape}, one_hertz_wave: {one_hertz_wave.shape}")
 
     for beat_index, beat in enumerate(melody.notes):
         start_sample_index: int = beat_index * samples_per_beat_rounded
@@ -112,7 +126,14 @@ def render_wave(melody: Melody, sample_rate: int, voice: Callable[[Hertz, int, i
 
         # start the frequency as it had always been playing
         for frequency in beat:
-            beat_wave: numpy.ndarray = voice(frequency, sample_rate, start_sample_index, end_sample_index)
+            beat_wave: numpy.ndarray = one_hertz_wave[:samples_per_beat_rounded * frequency:frequency]
+
+            # print(f"Difference: {end_sample_index - start_sample_index}, beat_wave: {beat_wave.shape}, range: {len(range(0, samples_per_beat_rounded * frequency, frequency))}")
+
             result[start_sample_index:end_sample_index] += beat_wave
+
+        """pyplot.plot(result[start_sample_index:end_sample_index])
+        pyplot.show()
+        pyplot.close()"""
 
     return result
