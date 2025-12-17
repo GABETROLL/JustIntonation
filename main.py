@@ -14,7 +14,7 @@ def sine_wave(start_frame: int, duration_in_frames: int, hz: float, amplitude: f
     The result should be returned as a numpy ndarray with shape `(duration_in_frames, 1)`.
     """
     return numpy.sin(
-        numpy.arange(start_frame, start_frame + duration_in_frames) / SAMPLE_RATE * 2 * numpy.pi * frequency
+        numpy.arange(start_frame, start_frame + duration_in_frames) / SAMPLE_RATE * 2 * numpy.pi * hz
     ) * amplitude
 
 

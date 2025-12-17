@@ -63,58 +63,27 @@ class Melody:
     notes: list[list[Hertz]]
 
 
-def domain(frequency: Hertz, sample_rate: int, start_sample_index: int, end_sample_index: int) -> numpy.ndarray:
-    return numpy.linspace(
-        start_sample_index * 2 * frequency / sample_rate,
-        (end_sample_index - 1) * 2 * frequency / sample_rate,
-        end_sample_index - start_sample_index,
-    ) * numpy.pi
+def trumpet(domain: numpy.ndarray) -> numpy.ndarray:
+    return numpy.sin(domain) + numpy.sin(2 * domain) / 2
 
 
-def trumpet(frequency: Hertz, sample_rate: int, start_sample_index: int, end_sample_index: int) -> numpy.ndarray:
-    return numpy.sin(
-        domain(frequency, sample_rate, start_sample_index, end_sample_index)
-    ) + numpy.sin(
-        domain(frequency * 2, sample_rate, start_sample_index, end_sample_index)
-    ) / 2 + numpy.sin(
-        domain(frequency * 3, sample_rate, start_sample_index, end_sample_index)
-    ) / 3 + numpy.sin(
-        domain(frequency * 4, sample_rate, start_sample_index, end_sample_index)
-    ) / 4 + numpy.sin(
-        domain(frequency * 5, sample_rate, start_sample_index, end_sample_index)
-    ) / 5
+def other(domain: numpy.ndarray) -> numpy.ndarray:
+    return numpy.sin(domain) + numpy.sin(domain) / 3 + numpy.sin(domain) / 5 \
+         + numpy.sin(domain) / 7 + numpy.sin(domain) / 9
 
 
-def other(frequency: Hertz, sample_rate: int, start_sample_index: int, end_sample_index: int) -> numpy.ndarray:
-    return numpy.sin(
-        domain(frequency, sample_rate, start_sample_index, end_sample_index)
-    ) + numpy.sin(
-        domain(frequency * 3, sample_rate, start_sample_index, end_sample_index)
-    ) / 3 + numpy.sin(
-        domain(frequency * 5, sample_rate, start_sample_index, end_sample_index)
-    ) / 5 + numpy.sin(
-        domain(frequency * 7, sample_rate, start_sample_index, end_sample_index)
-    ) / 7 + numpy.sin(
-        domain(frequency * 9, sample_rate, start_sample_index, end_sample_index)
-    ) / 9
+def sine_wave(domain: numpy.ndarray) -> numpy.ndarray:
+    return numpy.sin(domain)
 
 
-def sine_wave(frequency: Hertz, sample_rate: int, start_sample_index: int, end_sample_index: int) -> numpy.ndarray:
-    numpy.sin(numpy.arange(start_sample_index, end_sample_index) / sample_rate)
-
-    big_wave: numpy.ndarray = numpy.sin(domain)
-    step: int = sample_rate // frequency
-    return big_wave[::step]   
-
-
-def render_wave(melody: Melody, sample_rate: int, voice: Callable[[Hertz, int, int, int], numpy.ndarray]) -> numpy.ndarray:
+def render_wave(melody: Melody, sample_rate: int, voice: Callable[[numpy.ndarray], numpy.ndarray]) -> numpy.ndarray:
     beats_per_second: float = melody.beats_per_minute / 60
     samples_per_beat_rounded: int = int(sample_rate / beats_per_second)
 
     beats: int = len(melody.notes)
 
     result: numpy.ndarray = numpy.zeros((samples_per_beat_rounded * beats,))
-    one_hertz_wave: numpy.ndarray = numpy.sin(
+    one_hertz_wave: numpy.ndarray = voice(
         numpy.arange(0, samples_per_beat_rounded ** 2 * beats) * 2 * numpy.pi / sample_rate
     )
 
