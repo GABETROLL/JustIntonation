@@ -97,10 +97,9 @@ def render_wave(melody: Melody, sample_rate: int, voice: Callable[[numpy.ndarray
         # start the frequency as it had always been playing
         for frequency in beat:
             # print(f"{frequency = }")
-            one_hertz_wave: numpy.ndarray = voice(
-                numpy.arange(start_sample_index * frequency, end_sample_index * frequency) * 2 * (numpy.pi / sample_rate)
+            beat_wave: numpy.ndarray = voice(
+                numpy.arange(start_sample_index, end_sample_index) * frequency * 2 * (numpy.pi / sample_rate)
             )
-            beat_wave: numpy.ndarray = one_hertz_wave[::frequency]
 
             # print(f"Difference: {end_sample_index - start_sample_index}")
             # print(f"one_hertz_wave: {one_hertz_wave.shape}, beat_wave: {beat_wave.shape}")
@@ -108,8 +107,8 @@ def render_wave(melody: Melody, sample_rate: int, voice: Callable[[numpy.ndarray
 
             result[start_sample_index:end_sample_index] += beat_wave
 
-        """pyplot.plot(result[start_sample_index:end_sample_index])
+        """ pyplot.plot(result[start_sample_index:end_sample_index])
         pyplot.show()
-        pyplot.close()"""
+        pyplot.close() """
 
     return result
