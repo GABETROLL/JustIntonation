@@ -58,9 +58,15 @@ SAMPLE_RATE = 14400
 
 
 @dataclass
+class Note:
+    frequency: Hertz
+    amplitude: float
+
+
+@dataclass
 class Melody:
     beats_per_minute: float
-    notes: list[list[Hertz]]
+    notes: list[list[Hertz | Note]]
 
 
 def trumpet(domain: numpy.ndarray) -> numpy.ndarray:
@@ -94,12 +100,22 @@ def render_wave(melody: Melody, sample_rate: int, voice: Callable[[numpy.ndarray
         start_sample_index: int = beat_index * samples_per_beat_rounded
         end_sample_index: int = start_sample_index + samples_per_beat_rounded
 
-        # start the frequency as it had always been playing
-        for frequency in beat:
+        # Either it's a note, or just a frequency,
+        # which would default to an amplitude of 1.
+        for note in beat:
+            frequency: Hertz = 0
+            amplitude: float = 1.0
+
+            if isinstance(note, Note):
+                frequency = note.frequency
+                amplitude = note.amplitude
+            else:
+                frequency = note
+
             # print(f"{frequency = }")
             beat_wave: numpy.ndarray = voice(
                 numpy.arange(start_sample_index, end_sample_index) * frequency % sample_rate * 2 * (numpy.pi / sample_rate),
-            )
+            ) * amplitude
 
             # print(f"Difference: {end_sample_index - start_sample_index}")
             # print(f"one_hertz_wave: {one_hertz_wave.shape}, beat_wave: {beat_wave.shape}")
