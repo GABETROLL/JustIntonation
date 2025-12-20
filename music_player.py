@@ -69,15 +69,15 @@ def trumpet(domain: numpy.ndarray) -> numpy.ndarray:
 
 
 def other(domain: numpy.ndarray) -> numpy.ndarray:
-    return numpy.sin(domain) + numpy.sin(domain) / 3 + numpy.sin(domain) / 5 \
-         + numpy.sin(domain) / 7 + numpy.sin(domain) / 9
+    return numpy.sin(domain) + numpy.sin(3 * domain) / 3 + numpy.sin(5 * domain) / 5 \
+         + numpy.sin(7 * domain) / 7 + numpy.sin(9 * domain) / 9
 
 
 def sine_wave(domain: numpy.ndarray) -> numpy.ndarray:
     return numpy.sin(domain)
 
 
-def render_wave(melody: Melody, sample_rate: int, voice: Callable[[numpy.ndarray], numpy.ndarray]) -> numpy.ndarray:
+def render_wave(melody: Melody, sample_rate: int, voice: Callable[[numpy.ndarray, int, int], numpy.ndarray]) -> numpy.ndarray:
     beats_per_second: float = melody.beats_per_minute / 60
     samples_per_beat_rounded: int = int(sample_rate / beats_per_second)
 
@@ -98,7 +98,7 @@ def render_wave(melody: Melody, sample_rate: int, voice: Callable[[numpy.ndarray
         for frequency in beat:
             # print(f"{frequency = }")
             beat_wave: numpy.ndarray = voice(
-                numpy.arange(start_sample_index, end_sample_index) * frequency * 2 * (numpy.pi / sample_rate)
+                numpy.arange(start_sample_index, end_sample_index) * frequency % sample_rate * 2 * (numpy.pi / sample_rate),
             )
 
             # print(f"Difference: {end_sample_index - start_sample_index}")

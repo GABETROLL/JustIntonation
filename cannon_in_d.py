@@ -589,5 +589,5 @@ print(B2, B3, B4, B5)
 wave: numpy.ndarray = render_wave(
     melody,
     SAMPLE_RATE,
-    trumpet,
+    other,
 )
