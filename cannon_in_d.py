@@ -26,6 +26,8 @@ F_SHARP_3 = int(D3 * 5 / 4)
 A3 = int(D3 * 3 / 2)
 C_SHARP_4 = int(A3 * 5 / 4)
 E4 = int(A3 * 3 / 2)
+G1_4 = int(E4 * 6 / 5)
+B1_4 = int(E4 * 3 / 2)
 
 D2 = D3 >> 1
 E2 = E4 >> 2
@@ -366,7 +368,7 @@ melody = Melody(
 
         [A2, A5],
         [A2, A4],
-        [E3, B4],
+        [E3, B1_4],
         [E3, C_SHARP_5],
         [A3, D5],
         [A3, E5],
@@ -440,7 +442,7 @@ melody = Melody(
 
         [A2, A5],
         [A2, A4],
-        [E3, B4],
+        [E3, B1_4],
         [E3, C_SHARP_5],
         [A3, D5],
         [A3, E5],
@@ -492,10 +494,10 @@ melody = Melody(
         [D3],
         [D3],
 
-        [A2, G4, B4],
-        [A2, G4, B4],
-        [E3, G4, B4],
-        [E3, G4, B4],
+        [A2, G1_4, B1_4],
+        [A2, G1_4, B1_4],
+        [E3, G1_4, B1_4],
+        [E3, G1_4, B1_4],
         [A3, A4, C_SHARP_5],
         [A3, A4, C_SHARP_5],
         [E3, A4, C_SHARP_5],
@@ -579,7 +581,7 @@ melody = Melody(
 
 
 print(C_SHARP_2, C_SHARP_3, C_SHARP_4, C_SHARP_5, C_SHARP_6)
-print(D2, D3, D5, D5, D6)
+print(D2, D3, D4, D5, D6)
 print(E2, E3, E4, E5)
 print(F_SHARP_2, F_SHARP_3, F_SHARP_4, F_SHARP_5)
 print(G2, G3, G4, G5)
@@ -589,5 +591,5 @@ print(B2, B3, B4, B5)
 wave: numpy.ndarray = render_wave(
     melody,
     SAMPLE_RATE,
-    other,
+    piano_wave,
 )

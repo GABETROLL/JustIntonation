@@ -42,3 +42,14 @@ def simplify_fraction(integers: list[int]) -> list[int]:
 
 def make_co_prime(frequencies: list[int]) -> list[int]:
     return [simplify_fraction(beat_frequencies) for beat_frequencies in frequencies]
+
+
+def convert_ratio_to_color(ratio: list[int]) -> int:
+    product: int = 1
+
+    for frequency in ratio:
+        product *= frequency
+
+    kelvin: int = (product - 1) * (12000 - 1000) / (1080 - 1) + 1000
+
+    return kelvin

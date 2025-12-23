@@ -1,7 +1,7 @@
 import sounddevice
 import numpy
 from music_player import *
-from home_weve_finally_landed import wave
+from face import wave
 
 current_frame: int = 0
 

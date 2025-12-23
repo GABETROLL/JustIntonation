@@ -76,11 +76,22 @@ def trumpet(domain: numpy.ndarray) -> numpy.ndarray:
 
 def other(domain: numpy.ndarray) -> numpy.ndarray:
     return numpy.sin(domain) + numpy.sin(3 * domain) / 3 + numpy.sin(5 * domain) / 5 \
-         + numpy.sin(7 * domain) / 7 + numpy.sin(9 * domain) / 9
+         + numpy.sin(7 * domain) / 7 + numpy.sin(9 * domain) / 9 \
+         + numpy.sin(11 * domain) / 11 + numpy.sin(13 * domain) / 13
 
 
 def sine_wave(domain: numpy.ndarray) -> numpy.ndarray:
     return numpy.sin(domain)
+
+
+def my_sine_wave(start_sample_index: int, end_sample_index: int):
+    pass
+
+
+def piano_wave(domain: numpy.ndarray) -> numpy.ndarray:
+    return numpy.sin(domain) * 0.9 + numpy.sin(2 * domain) + numpy.sin(3 * domain) * 0.57 \
+        + numpy.sin(4 * domain) * 0.04 + numpy.sin(5 * domain) * 0.08 \
+        + numpy.sin(6 * domain) * 0.07
 
 
 def render_wave(melody: Melody, sample_rate: int, voice: Callable[[numpy.ndarray, int, int], numpy.ndarray]) -> numpy.ndarray:
@@ -90,9 +101,10 @@ def render_wave(melody: Melody, sample_rate: int, voice: Callable[[numpy.ndarray
     beats: int = len(melody.notes)
 
     result: numpy.ndarray = numpy.zeros((samples_per_beat_rounded * beats,))
-    """one_hertz_wave: numpy.ndarray = voice(
-        numpy.arange(0, samples_per_beat_rounded ** 2 * beats) * 2 * numpy.pi / sample_rate
-    )"""
+
+    # one_hertz_wave: numpy.ndarray = voice(
+    #     numpy.arange(sample_rate) * 2 * numpy.pi / sample_rate
+    # )
 
     # print(f"result: {result.shape}, one_hertz_wave: {one_hertz_wave.shape}")
 
@@ -112,10 +124,14 @@ def render_wave(melody: Melody, sample_rate: int, voice: Callable[[numpy.ndarray
             else:
                 frequency = note
 
+            # samples_per_frequency: int = sample_rate // frequency
+
             # print(f"{frequency = }")
             beat_wave: numpy.ndarray = voice(
-                numpy.arange(start_sample_index, end_sample_index) * frequency % sample_rate * 2 * (numpy.pi / sample_rate),
+                numpy.arange(start_sample_index, end_sample_index) * frequency % sample_rate * 2 * (numpy.pi / sample_rate)
             ) * amplitude
+
+            # beat_wave: numpy.ndarray = one_hertz_wave[::samples_per_frequency]
 
             # print(f"Difference: {end_sample_index - start_sample_index}")
             # print(f"one_hertz_wave: {one_hertz_wave.shape}, beat_wave: {beat_wave.shape}")
