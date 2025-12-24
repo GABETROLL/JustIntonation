@@ -18,45 +18,47 @@ C# => 1080
 ...
 """
 from music_player import *
+from frequency_ratios import prime_factors, simplify_fraction
 
-HOME = D3 = 288
-B2 = int(D3 * 5 / 6)
-G2 = int(D3 * 2 / 3)
-F_SHARP_3 = int(D3 * 5 / 4)
-A3 = int(D3 * 3 / 2)
-C_SHARP_4 = int(A3 * 5 / 4)
-E4 = int(A3 * 3 / 2)
-G1_4 = int(E4 * 6 / 5)
-B1_4 = int(E4 * 3 / 2)
 
-D2 = D3 >> 1
-E2 = E4 >> 2
-F_SHARP_2 = F_SHARP_3 >> 1
-A2 = A3 >> 1
-C_SHARP_2 = C_SHARP_4 >> 2
+HOME = D3 = 180
+B2 = D3 * 5 / 6            # [2, 3]
+G2 = D3 * 2 / 3            # [3]
+F_SHARP_3 = D3 * 5 / 4     # [2, 2]
+A3 = D3 * 3 / 2            # [2]
+C_SHARP_4 = A3 * 5 / 4     # [2, 2, 2]
+E4 = A3 * 3 / 2            # [2, 2]
+G1_4 = E4 * 6 / 5          # [2, 2, 5]
+B1_4 = E4 * 3 / 2          # [2, 2, 2]
 
-E3 = E4 >> 1
-G3 = G2 << 1
-B3 = B2 << 1
-C_SHARP_3 = C_SHARP_4 >> 1
+D2 = D3 / 2                # [2]
+E2 = E4 / 4                # [2, 2, 2, 2]
+F_SHARP_2 = F_SHARP_3 / 2  # [2, 2, 2]
+A2 = A3 / 2                # [2, 2]
+C_SHARP_2 = C_SHARP_4 / 4  # [2, 2, 2, 2, 2]
 
-D4 = D3 << 1
-F_SHARP_4 = F_SHARP_3 << 1
-G4 = G2 << 2
-A4 = A3 << 1
-B4 = B2 << 2
-C5 = int(G4 * 4 / 3)
-C_SHARP_5 = C_SHARP_4 << 1
+E3 = E4 / 2                # [2, 2, 2]
+G3 = G2 * 2                # [3]
+B3 = B2 * 2                # [2, 3]
+C_SHARP_3 = C_SHARP_4 / 2  # [2, 2, 2, 2]
 
-D5 = D3 << 2
-E5 = E4 << 1
-F_SHARP_5 = F_SHARP_3 << 2
-G5 = G2 << 3
-A5 = A3 << 2
-B5 = B2 << 3
-C_SHARP_6 = C_SHARP_4 << 2
+D4 = D3 * 2                # []
+F_SHARP_4 = F_SHARP_3 * 2  # [2, 2]
+G4 = G2 * 4                # [3]
+A4 = A3 * 2                # [2]
+B4 = B2 * 4                # [2, 3]
+C5 = G4 * 4 / 3            # [3, 3]
+C_SHARP_5 = C_SHARP_4 * 2  # [2, 2, 2]
 
-D6 = D3 << 3
+D5 = D3 * 4
+E5 = E4 * 2
+F_SHARP_5 = F_SHARP_3 * 4
+G5 = G2 * 8
+A5 = A3 * 4
+B5 = B2 * 8
+C_SHARP_6 = C_SHARP_4 * 4
+
+D6 = D3 * 8
 
 melody = Melody(
     360,
@@ -298,8 +300,8 @@ melody = Melody(
         [E3, E4],
         [A3, A4],
         [A3, A4],
-        [E3, G4],
-        [E3, G4],
+        [E3, G1_4],
+        [E3, G1_4],
 
         [B2, F_SHARP_4],
         [B2, F_SHARP_4],
@@ -422,7 +424,7 @@ melody = Melody(
 
         [A2, C_SHARP_5],
         [A2, A4],
-        [E3, B4],
+        [E3, B1_4],
         [E3, C_SHARP_5],
         [A3, D5],
         [A3, E5],
@@ -579,14 +581,23 @@ melody = Melody(
     ],
 )
 
+"""
+print([
+    prime_factors(frequency) for frequency in [
+        C_SHARP_2, C_SHARP_3, C_SHARP_4, C_SHARP_5, C_SHARP_6,
+        D2, D3, D4, D5, D6,
+        E2, E3, E4, E5,
+        F_SHARP_2, F_SHARP_3, F_SHARP_4, F_SHARP_5,
+        G2, G3, G4, G5,
+        G1_4,
+        A2, A3, A4, A5,
+        B2, B3, B4, B5,
+        B1_4,
+    ]
+])
+"""
 
-print(C_SHARP_2, C_SHARP_3, C_SHARP_4, C_SHARP_5, C_SHARP_6)
-print(D2, D3, D4, D5, D6)
-print(E2, E3, E4, E5)
-print(F_SHARP_2, F_SHARP_3, F_SHARP_4, F_SHARP_5)
-print(G2, G3, G4, G5)
-print(A2, A3, A4, A5)
-print(B2, B3, B4, B5)
+# print([simplify_fraction(beat) for beat in melody.notes])
 
 wave: numpy.ndarray = render_wave(
     melody,

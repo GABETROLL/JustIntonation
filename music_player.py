@@ -59,8 +59,10 @@ SAMPLE_RATE = 14400
 
 @dataclass
 class Note:
+    voice: Callable[[numpy.ndarray], numpy.ndarray]
     frequency: Hertz
-    amplitude: float
+    amplitude: numpy.ScalarType
+    duration_in_beats: int
 
 
 @dataclass
@@ -84,17 +86,17 @@ def sine_wave(domain: numpy.ndarray) -> numpy.ndarray:
     return numpy.sin(domain)
 
 
-def my_sine_wave(start_sample_index: int, end_sample_index: int):
-    pass
-
-
 def piano_wave(domain: numpy.ndarray) -> numpy.ndarray:
-    return numpy.sin(domain) * 0.9 + numpy.sin(2 * domain) + numpy.sin(3 * domain) * 0.57 \
-        + numpy.sin(4 * domain) * 0.04 + numpy.sin(5 * domain) * 0.08 \
-        + numpy.sin(6 * domain) * 0.07
+    result = numpy.sin(domain) * 0.6 + numpy.sin(2 * domain) * 0.04
+    result += result * result * result
+    return result
 
 
-def render_wave(melody: Melody, sample_rate: int, voice: Callable[[numpy.ndarray, int, int], numpy.ndarray]) -> numpy.ndarray:
+def get_sin_domain(start_sample_index: int, end_sample_index: int, frequency: int, sample_rate: int) -> numpy.ndarray:
+    return numpy.arange(start_sample_index, end_sample_index) * frequency % sample_rate * 2 * (numpy.pi / sample_rate)
+
+
+def render_wave(melody: Melody, sample_rate: int, default_voice: Callable[[numpy.ndarray, int, int], numpy.ndarray]) -> numpy.ndarray:
     beats_per_second: float = melody.beats_per_minute / 60
     samples_per_beat_rounded: int = int(sample_rate / beats_per_second)
 
@@ -110,34 +112,42 @@ def render_wave(melody: Melody, sample_rate: int, voice: Callable[[numpy.ndarray
 
     for beat_index, beat in enumerate(melody.notes):
         start_sample_index: int = beat_index * samples_per_beat_rounded
-        end_sample_index: int = start_sample_index + samples_per_beat_rounded
 
         # Either it's a note, or just a frequency,
         # which would default to an amplitude of 1.
         for note in beat:
-            frequency: Hertz = 0
-            amplitude: float = 1.0
+            amplitude: numpy.ScalarType = 1.0
 
             if isinstance(note, Note):
-                frequency = note.frequency
+                frequency: Hertz = note.frequency
                 amplitude = note.amplitude
+                duration_in_samples: int = note.duration_in_beats * samples_per_beat_rounded
+
+                note_end_sample_index: int = start_sample_index + duration_in_samples
+
+                note_wave: numpy.ndarray = note.voice(
+                    get_sin_domain(start_sample_index, note_end_sample_index, frequency, sample_rate)
+                ) * amplitude
+
+                result[start_sample_index:note_end_sample_index] += note_wave
             else:
-                frequency = note
+                frequency: Hertz = note
+                beat_end_sample_index: int = start_sample_index + samples_per_beat_rounded
 
-            # samples_per_frequency: int = sample_rate // frequency
+                # samples_per_frequency: int = sample_rate // frequency
 
-            # print(f"{frequency = }")
-            beat_wave: numpy.ndarray = voice(
-                numpy.arange(start_sample_index, end_sample_index) * frequency % sample_rate * 2 * (numpy.pi / sample_rate)
-            ) * amplitude
+                # print(f"{frequency = }")
+                beat_wave: numpy.ndarray = default_voice(
+                    get_sin_domain(start_sample_index, beat_end_sample_index, frequency, sample_rate)
+                ) * amplitude
 
-            # beat_wave: numpy.ndarray = one_hertz_wave[::samples_per_frequency]
+                # beat_wave: numpy.ndarray = one_hertz_wave[::samples_per_frequency]
 
-            # print(f"Difference: {end_sample_index - start_sample_index}")
-            # print(f"one_hertz_wave: {one_hertz_wave.shape}, beat_wave: {beat_wave.shape}")
-            # print(f"range: {len(range(start_sample_index * frequency, end_sample_index * frequency, frequency))}")
+                # print(f"Difference: {end_sample_index - start_sample_index}")
+                # print(f"one_hertz_wave: {one_hertz_wave.shape}, beat_wave: {beat_wave.shape}")
+                # print(f"range: {len(range(start_sample_index * frequency, end_sample_index * frequency, frequency))}")
 
-            result[start_sample_index:end_sample_index] += beat_wave
+                result[start_sample_index:beat_end_sample_index] += beat_wave
 
         """ pyplot.plot(result[start_sample_index:end_sample_index])
         pyplot.show()

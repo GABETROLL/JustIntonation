@@ -1,7 +1,7 @@
 import sounddevice
 import numpy
 from music_player import *
-from face import wave
+from samsung_alarm import wave
 
 current_frame: int = 0
 
