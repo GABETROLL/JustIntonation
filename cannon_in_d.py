@@ -18,10 +18,8 @@ C# => 1080
 ...
 """
 from music_player import *
-from frequency_ratios import prime_factors, simplify_fraction
 
-
-HOME = D3 = 180
+HOME = D3 = 144
 B2 = D3 * 5 / 6            # [2, 3]
 G2 = D3 * 2 / 3            # [3]
 F_SHARP_3 = D3 * 5 / 4     # [2, 2]
@@ -59,6 +57,98 @@ B5 = B2 * 8
 C_SHARP_6 = C_SHARP_4 * 4
 
 D6 = D3 * 8
+
+NOTE_AMPLITUDE = 1 / 6
+
+intro_bass: Melody = Melody(
+    180,
+    [
+        [D3],
+        [A3],
+        [D4],
+        [F_SHARP_4],
+
+        [A2],
+        [E3],
+        [A3],
+        [C_SHARP_4],
+
+        [B2],
+        [F_SHARP_3],
+        [B3],
+        [D4],
+
+        [F_SHARP_2],
+        [C_SHARP_3],
+        [F_SHARP_3],
+        [A3],
+
+        [G2],
+        [D3],
+        [G3],
+        [B3],
+
+        [D2],
+        [A2],
+        [D3],
+        [F_SHARP_3],
+
+        [G2],
+        [D3],
+        [G3],
+        [B3],
+
+        [A2],
+        [E3],
+        [A3],
+        [C_SHARP_4],
+    ] * 2
+)
+
+bass = Melody(
+    180,
+    [
+        [D3],
+        [A3],
+        [D4],
+        [A3],
+
+        [A2],
+        [E3],
+        [A3],
+        [E3],
+
+        [B2],
+        [F_SHARP_3],
+        [B3],
+        [F_SHARP_3],
+
+        [F_SHARP_2],
+        [C_SHARP_3],
+        [F_SHARP_2],
+        [C_SHARP_3],
+
+        [G2],
+        [D3],
+        [G3],
+        [D3],
+
+        [D2],
+        [A2],
+        [D3],
+        [A2],
+
+        [G2],
+        [D3],
+        [G3],
+        [D3],
+
+        [A2],
+        [E3],
+        [A3],
+        [E3],
+    ]
+)
 
 melody = Melody(
     360,
