@@ -1,7 +1,7 @@
 import sounddevice
 import numpy
 from music_player import *
-from samsung_alarm import wave
+from if_i_had_a_chicken import wave
 
 current_frame: int = 0
 
