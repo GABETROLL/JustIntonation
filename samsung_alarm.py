@@ -43,77 +43,60 @@ G0 = D2 * 1 / 3
 melody: Melody = Melody(
     240,
     [
-        [D3, F_SHARP_5],        # 5:1   2:1 = D3
-        [D3, F_SHARP_5],        # 5:1   2:1 = D3
-        [D3, E5],               # 9:2   1:1 = D2
-        [D3, E5],               # 9:2   1:1 = D2
-        [C_SHARP_3, F_SHARP_5], # 16:3  5:8 = F_SHARP_1
-        [C_SHARP_3, A5],        # 32:5  3:8 = A0
-        [C_SHARP_3, D5],        # 64:15 1:8 = D_MINUS_1
-        [C_SHARP_3, D5],        # 64:15 1:8 = D_MINUS_1
-        [B2, F_SHARP_5],        # 6:1   5:3 = B2
-        [B2, F_SHARP_5],        # 6:1   5:3 = B2
-        [B2, E5],               # 27:5  1:3 = G0
-        [B2, E5],               # 27:5  1:3 = G0
-        [A2, F_SHARP_5],        # 20:3  1:2 = D1
-        [A2, A5],               # 8:1   3:2 = A2
-        [A2, D5],               # 16:3  1:2 = D1
-        [A2, D5],               # 16:3  1:2 = D1
-        [G2, G5],               # 8:1   4:3 = G2
-        [G2, F_SHARP_5],        # 15:2  2:3 = A1
-        [G2, E5],               # 27:4  1:3 = G0
-        [G2, D5],               # 6:1   4:3 = G2
-        [A2, C_SHARP_5],        # 5:1   3:2 = A2
-        [A2, D5],               # 16:3  1:2 = D1
-        [A2, E5],               # 6:1   3:2 = A2
-        [A2, C_SHARP_5],        # 5:1   3:2 = A2
-        [D3, D5],               # 2:1   2:1 = D3
-        [D3, E5],               # 9:2   1:1 = D2
-        [D3, F_SHARP_5],        # 5:1   2:1 = D3
-        [D3, G5],               # 16:3  2:3 = A1
-        [D3, A5],               # 6:1   2:1 = D3
-        [D3, A5],               # 6:1   2:1 = D3
-        [D3, A4],               # 3:1   2:1 = D3
-        [D3, A4],               # 3:1   2:1 = D3
-        [D3, F_SHARP_5],        # 5:1   2:1 = D3
-        [D3, F_SHARP_5],        # 5:1   2:1 = D3
-        [D3, E5],               # 9:2   1:1 = D2
-        [D3, E5],               # 9:2   1:1 = D2
-        [C_SHARP_3, F_SHARP_5], # 16:3  5:8 = F_SHARP_1
-        [C_SHARP_3, A5],        # 32:5  3:8 = A0
-        [C_SHARP_3, D5],        # 64:15 1:8 = D_MINUS_1
-        [C_SHARP_3, D5],        # 64:15 1:8 = D_MINUS_1
-        [B2, F_SHARP_5],        # 6:1   5:3 = B2
-        [B2, F_SHARP_5],        # 6:1   5:3 = B2
-        [B2, E5],               # 27:5  1:3 = G0
-        [B2, E5],               # 27:5  1:3 = G0
-        [A2, F_SHARP_5],        # 20:3  1:2 = D1
-        [A2, A5],               # 8:1   3:2 = A2
-        [A2, D5],               # 16:3  1:2 = D1
-        [A2, D5],               # 16:3  1:2 = D1
-        [G2, G5],               # 8:1   4:3 = G2
-        [G2, F_SHARP_5],        # 15:2  2:3 = A1
-        [G2, E5],               # 27:4  1:3 = G0
-        [G2, D5],               # 6:1   4:3 = G2
-        [A2, C_SHARP_5],        # 5:1   3:2 = A2
-        [A2, D5],               # 16:3  1:2 = D1
-        [A2, E5],               # 6:1   3:2 = A2
-        [A2, C_SHARP_5],        # 5:1   3:2 = A2
-        [D3, D5],               # 4:1   2:1 = D3
-        [D3, A5],               # 6:1   2:1 = D3
-        [D3, F_SHARP_5],        # 5:1   2:1 = D3
-        [D3, A5],               # 6:1   2:1 = D3
-        [D3, D5],               # 4:1   2:1 = D3
-        [D3, D5],               # 4:1   2:1 = D3
-        [D3, D5],               # 4:1   2:1 = D3
-        [D3, D5],               # 4:1   2:1 = D3
+        [Note(dampened_piano_wave, D3, 0.2, 4), Note(dampened_piano_wave, F_SHARP_5, 0.2, 2)], [],    # 5:1   2:1 = D3
+        [Note(dampened_piano_wave, E5, 0.2, 2)], [],                                                  # 9:2   1:1 = D2
+        [Note(dampened_piano_wave, C_SHARP_3, 0.2, 4), Note(dampened_piano_wave, F_SHARP_5, 0.2, 1)], # 16:3  5:8 = F_SHARP_1
+        [Note(dampened_piano_wave, A5, 0.2, 1)],                                                      # 32:5  3:8 = A0
+        [Note(dampened_piano_wave, D5, 0.2, 2)], [],                                                  # 64:15 1:8 = D_MINUS_1
+        [Note(dampened_piano_wave, B2, 0.2, 4), Note(dampened_piano_wave, F_SHARP_5, 0.2, 2)], [],    # 6:1   5:3 = B2
+        [Note(dampened_piano_wave, E5, 0.2, 2)], [],                                                  # 27:5  1:3 = G0
+        [Note(dampened_piano_wave, A2, 0.2, 4), Note(dampened_piano_wave, F_SHARP_5, 0.2, 1)],        # 20:3  1:2 = D1
+        [Note(dampened_piano_wave, A5, 0.2, 1)],                                                      # 8:1   3:2 = A2
+        [Note(dampened_piano_wave, D5, 0.2, 2)], [],                                                  # 16:3  1:2 = D1
+        [Note(dampened_piano_wave, G2, 0.2, 4), Note(dampened_piano_wave, G5, 0.2, 1)],               # 8:1   4:3 = G2
+        [Note(dampened_piano_wave, F_SHARP_5, 0.2, 1)],                                               # 15:2  2:3 = A1
+        [Note(dampened_piano_wave, E5, 0.2, 1)],                                                      # 27:4  1:3 = G0
+        [Note(dampened_piano_wave, D5, 0.2, 1)],                                                      # 6:1   4:3 = G2
+        [Note(dampened_piano_wave, A2, 0.2, 4), Note(dampened_piano_wave, C_SHARP_5, 0.2, 1)],        # 5:1   3:2 = A2
+        [Note(dampened_piano_wave, D5, 0.2, 1)],                                                      # 16:3  1:2 = D1
+        [Note(dampened_piano_wave, E5, 0.2, 1)],                                                      # 6:1   3:2 = A2
+        [Note(dampened_piano_wave, C_SHARP_5, 0.2, 1)],                                               # 5:1   3:2 = A2
+        [Note(dampened_piano_wave, D3, 0.2, 8), Note(dampened_piano_wave, D5, 0.2, 1)],               # 2:1   2:1 = D3
+        [Note(dampened_piano_wave, E5, 0.2, 1)],                                                      # 9:2   1:1 = D2
+        [Note(dampened_piano_wave, F_SHARP_5, 0.2, 1)],                                               # 5:1   2:1 = D3
+        [Note(dampened_piano_wave, G5, 0.2, 1)],                                                      # 16:3  2:3 = A1
+        [Note(dampened_piano_wave, A5, 0.2, 2)], [],                                                  # 6:1   2:1 = D3
+        [Note(dampened_piano_wave, A4, 0.2, 2)], [],                                                  # 3:1   2:1 = D3
+        [Note(dampened_piano_wave, D3, 0.2, 4), Note(dampened_piano_wave, F_SHARP_5, 0.2, 2)], [],    # 5:1   2:1 = D3
+        [Note(dampened_piano_wave, E5, 0.2, 2)], [],                                                  # 9:2   1:1 = D2
+        [Note(dampened_piano_wave, C_SHARP_3, 0.2, 4), Note(dampened_piano_wave, F_SHARP_5, 0.2, 1)], # 16:3  5:8 = F_SHARP_1
+        [Note(dampened_piano_wave, A5, 0.2, 1)],                                                      # 32:5  3:8 = A0
+        [Note(dampened_piano_wave, D5, 0.2, 2)], [],                                                  # 64:15 1:8 = D_MINUS_1
+        [Note(dampened_piano_wave, B2, 0.2, 4), Note(dampened_piano_wave, F_SHARP_5, 0.2, 2)], [],    # 6:1   5:3 = B2
+        [Note(dampened_piano_wave, E5, 0.2, 2)], [],                                                  # 27:5  1:3 = G0
+        [Note(dampened_piano_wave, A2, 0.2, 4), Note(dampened_piano_wave, F_SHARP_5, 0.2, 1)],        # 20:3  1:2 = D1
+        [Note(dampened_piano_wave, A5, 0.2, 1)],                                                      # 8:1   3:2 = A2
+        [Note(dampened_piano_wave, D5, 0.2, 2)], [],                                                  # 16:3  1:2 = D1
+        [Note(dampened_piano_wave, G2, 0.2, 4), Note(dampened_piano_wave, G5, 0.2, 1)],               # 8:1   4:3 = G2
+        [Note(dampened_piano_wave, F_SHARP_5, 0.2, 1)],                                               # 15:2  2:3 = A1
+        [Note(dampened_piano_wave, E5, 0.2, 1)],                                                      # 27:4  1:3 = G0
+        [Note(dampened_piano_wave, D5, 0.2, 1)],                                                      # 6:1   4:3 = G2
+        [Note(dampened_piano_wave, A2, 0.2, 4), Note(dampened_piano_wave, C_SHARP_5, 0.2, 1)],        # 5:1   3:2 = A2
+        [Note(dampened_piano_wave, D5, 0.2, 1)],                                                      # 16:3  1:2 = D1
+        [Note(dampened_piano_wave, E5, 0.2, 1)],                                                      # 6:1   3:2 = A2
+        [Note(dampened_piano_wave, C_SHARP_5, 0.2, 1)],                                               # 5:1   3:2 = A2
+        [Note(dampened_piano_wave, D3, 0.2, 8), Note(dampened_piano_wave, D5, 0.2, 1)],               # 4:1   2:1 = D3
+        [Note(dampened_piano_wave, A5, 0.2, 1)],                                                      # 6:1   2:1 = D3
+        [Note(dampened_piano_wave, F_SHARP_5, 0.2, 1)],                                               # 5:1   2:1 = D3
+        [Note(dampened_piano_wave, A5, 0.2, 1)],                                                      # 6:1   2:1 = D3
+        [Note(dampened_piano_wave, D5, 0.2, 4)], [], [], [],                                          # 4:1   2:1 = D3
     ],
 )
 
 wave: numpy.ndarray = render_wave(
     melody,
     SAMPLE_RATE,
-    piano_wave,
+    dampened_piano_wave,
 )
 
 print(melody.notes)
