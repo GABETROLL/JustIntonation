@@ -1,7 +1,7 @@
 import numpy
 from dataclasses import dataclass
 from typing import Callable, Optional
-from matplotlib import pyplot
+# from matplotlib import pyplot
 
 Hertz: type = int
 
@@ -71,6 +71,20 @@ class Melody:
     notes: list[list[Hertz | Note]]
 
 
+def octaves(note: int, n: int) -> tuple[int, ...]:
+    """
+    Returns the next `n` octaves of `note` ABOVE `note`, in a tuple.
+
+    The 0th item in the resulting tuple is note * 2,
+    the second is note * 4, ..., and the last element is
+    note * 2 ** n.
+
+    Example:
+    octaves(288) = (576, 1152, 2304)
+    """
+    return tuple(note * 2 ** m for m in range(1, n + 1))
+
+
 def _dampen(samples: int) -> numpy.ndarray:
     return numpy.arange(samples - 1, -1, -1) / samples
 
@@ -81,9 +95,11 @@ def trumpet(domain: numpy.ndarray) -> numpy.ndarray:
 
 
 def other(domain: numpy.ndarray) -> numpy.ndarray:
-    return numpy.sin(domain) + numpy.sin(3 * domain) / 3 + numpy.sin(5 * domain) / 5 \
-         + numpy.sin(7 * domain) / 7 + numpy.sin(9 * domain) / 9 \
+    return (
+        numpy.sin(domain) + numpy.sin(3 * domain) / 3 + numpy.sin(5 * domain) / 5
+         + numpy.sin(7 * domain) / 7 + numpy.sin(9 * domain) / 9
          + numpy.sin(11 * domain) / 11 + numpy.sin(13 * domain) / 13
+    ) / 7
 
 
 def sine_wave(domain: numpy.ndarray) -> numpy.ndarray:
@@ -98,6 +114,31 @@ def piano_wave(domain: numpy.ndarray) -> numpy.ndarray:
 
 def dampened_piano_wave(domain: numpy.ndarray, amplitude: float = 1.0) -> numpy.ndarray:
     return piano_wave(domain) * _dampen(domain.size) * amplitude
+
+
+def violin_wave(domain: numpy.ndarray, amplitude: float = 1.0) -> numpy.ndarray:
+    HARMONICS_DB = [-33, -38, -51, -55, -54, -65, -61, -65, -71, -81, -76, -78, -78, -80, -78, -90, -83, -81, None, -79, -86]
+    harmonics_pressure = [(10 ** (h / 20)) * amplitude if h is not None else 0 for h in HARMONICS_DB]
+
+    print(harmonics_pressure, sum(harmonics_pressure))
+
+    wave = numpy.zeros(domain.shape)
+    
+    for harmonic_index, harmonic_volume in enumerate(harmonics_pressure):
+        if harmonic_volume is None:
+            continue
+
+        wave += harmonic_volume * numpy.sin((harmonic_index + 1) * domain)
+
+    size_sqrt: numpy.float_ = numpy.sqrt(domain.size)
+
+    wave *= numpy.sqrt(numpy.arange(domain.size)) / size_sqrt
+    wave *= numpy.sqrt(numpy.arange(domain.size - 1, -1, -1)) / size_sqrt
+    wave *= 2
+
+    # (assuming the domain is a 1D ndarray, this can be done)
+
+    return wave
 
 
 def get_sin_domain(start_sample_index: int, end_sample_index: int, frequency: int, sample_rate: int) -> numpy.ndarray:
@@ -146,6 +187,7 @@ def render_wave(melody: Melody, sample_rate: int, default_voice: Callable[[numpy
             beat_wave: numpy.ndarray = voice(
                 get_sin_domain(start_sample_index, end_sample_index, frequency, sample_rate)
             ) * amplitude
+            # TODO: MAKE PARAMETER !!!
 
             # beat_wave: numpy.ndarray = one_hertz_wave[::samples_per_frequency]
 
