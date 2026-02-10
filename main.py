@@ -1,9 +1,10 @@
 import sounddevice
 import numpy
 from music_player import *
-from if_i_had_a_chicken import wave
+from living_hope import wave
 
 current_frame: int = 0
+
 
 def sine_wave(start_frame: int, duration_in_frames: int, hz: float, amplitude: float) -> numpy.ndarray:
     """

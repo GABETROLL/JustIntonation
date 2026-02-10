@@ -102,6 +102,13 @@ def other(domain: numpy.ndarray) -> numpy.ndarray:
     ) / 7
 
 
+def triangle(domain: numpy.ndarray) -> numpy.ndarray:
+    return (
+        -numpy.cos(domain) - numpy.cos(3 * domain) / 9 - numpy.cos(5 * domain) / 25
+        - numpy.cos(7 * domain) / 49 - numpy.cos(9 * domain) / 81 - numpy.cos(11 * domain) / 121
+    ) / 4
+
+
 def sine_wave(domain: numpy.ndarray) -> numpy.ndarray:
     return numpy.sin(domain)
 
@@ -118,7 +125,7 @@ def dampened_piano_wave(domain: numpy.ndarray, amplitude: float = 1.0) -> numpy.
 
 def violin_wave(domain: numpy.ndarray, amplitude: float = 1.0) -> numpy.ndarray:
     HARMONICS_DB = [-33, -38, -51, -55, -54, -65, -61, -65, -71, -81, -76, -78, -78, -80, -78, -90, -83, -81, None, -79, -86]
-    harmonics_pressure = [(10 ** (h / 20)) * amplitude if h is not None else 0 for h in HARMONICS_DB]
+    harmonics_pressure = [(10 ** ((h + 20) / 20)) * amplitude if h is not None else 0 for h in HARMONICS_DB]
 
     print(harmonics_pressure, sum(harmonics_pressure))
 

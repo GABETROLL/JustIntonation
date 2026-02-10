@@ -10,5 +10,7 @@ So, people in the past invented a new way to tune instruments: 12-tone equal tem
 However, this has been a downgrade on our music! Because, instead of perfect ratios, notes played together that aren't octaves apart create a ratio of frequencies that is _near_ perfect, creating a "wobble" sound... Listening to this type of music for all our lives, we've got used to hearing this type of tuning, however, this program lets you experience music how it was always meant to be experienced, the way people hundreds and even thousands of years before used to hear it!
 
 ## Vision & Future
+I hope to turn this program into a visual and interactive music editor, where frequencies in music are defined as ratios. That would allow me to make a program with these features:
+
 - Make every note be a function of a wave, that inputs a frequency, so that notes can be played with dampening, piano, other instruments...
 - Make this program able to change the home frequency, and to combine waves in lots of different ways, to allow it to play *any* sound!
