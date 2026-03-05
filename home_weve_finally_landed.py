@@ -715,5 +715,5 @@ melody = Melody(
 )
 
 wave: numpy.ndarray = render_wave(
-    melody, SAMPLE_RATE, other
+    melody, SAMPLE_RATE, other, 1 / 7,
 )
