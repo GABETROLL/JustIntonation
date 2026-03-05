@@ -693,4 +693,5 @@ wave: numpy.ndarray = render_wave(
     melody,
     SAMPLE_RATE,
     piano_wave,
+    0.2,
 )
