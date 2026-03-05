@@ -1,6 +1,6 @@
 from music_player import *
 
-D2 = 72                   # 1:1
+D2 = 144                  # 1:1
 E2 = D2 * 9 / 8           # 9:8
 F_SHARP_2 = D2 * 5 / 4    # 5:4
 G2 = D2 * 4 / 3           # 4:3
