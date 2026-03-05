@@ -97,4 +97,4 @@ notes = [
 
 melody = Melody(240, notes)
 
-wave = render_wave(melody, SAMPLE_RATE, other)
+wave = render_wave(melody, SAMPLE_RATE, sine_wave, 1 / 10)
