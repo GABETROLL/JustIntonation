@@ -35,7 +35,7 @@ AMPLITUDE = 0.15
 
 BEATS_PER_MINUTE = 60
 """
-BEATS_PER_MINUTE * SAMPLE_RATE MUST be divisible by 60 !
+SAMPLES_PER_MINUTE := (SAMPLE_RATE * 60) MUST be divisible by BEATS_PER_MINUTE!
 """
 
 BASS_VOICE = violin_wave
@@ -556,7 +556,7 @@ end = Melody(
     ],
 )
 
-SAMPLES_PER_BEAT = SAMPLE_RATE * BEATS_PER_MINUTE // 60
+SAMPLES_PER_BEAT = (SAMPLE_RATE * 60) // BEATS_PER_MINUTE
 """
 MUST be a valid operation, WITHOUT any rounding errors!
 """
@@ -587,6 +587,7 @@ end_wave = render_wave(
     end, SAMPLE_RATE, MELODY_VOICE, AMPLITUDE,
 )
 
+# print(SAMPLE_RATE, SAMPLES_PER_BEAT, SAMPLES_PER_BASS_SEQUENCE)
 # print(bass_wave.shape, whole_violin_1.shape, whole_violin_2.shape, whole_violin_3.shape, end_wave.shape)
 
 wave = numpy.concatenate((
