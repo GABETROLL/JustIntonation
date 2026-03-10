@@ -1,6 +1,32 @@
 from math import log2, log
 
 
+def product(numbers: list[int]) -> int:
+    result: int = 1
+
+    for number in numbers:
+        result *= number
+
+    return result
+
+
+def closest_multiple_in_log_scale(frequency: float, factor: int) -> int:
+    other_factor: int = frequency // factor
+    ratio_log: float = log2(frequency / factor)
+
+    # logb(x * y) = logb(x) + logb(y)
+    # logb(b ** c * b ** d) = logb(b ** c) + logb(b ** d)
+    # logb(b ** (c + d)) = logb(b ** c) + logb(b ** d)
+    # c + d = c + d
+
+    final_other_factor: int = min(
+        (other_factor, other_factor + 1),
+        key=lambda factor: abs(ratio_log - log2(factor)),
+    )
+
+    return final_other_factor * factor
+
+
 def prime_factors(n: int, result: dict[int, int] = None) -> dict[int, int]:
     if not isinstance(n, int) or n < 2:
         raise ValueError(f"n must be an integer, and must be >= 2. Got: {n}")
@@ -23,11 +49,14 @@ def prime_factors(n: int, result: dict[int, int] = None) -> dict[int, int]:
 
 
 def simplify_fraction(integers: list[int]) -> list[int]:
+    if len(integers) == 1:
+        return integers
+
     possible_factor: int = 2
 
     while True:
         for integer in integers:
-            if possible_factor < integer:
+            if possible_factor <= integer:
                 break
         else:
             break
@@ -44,6 +73,7 @@ def simplify_fraction(integers: list[int]) -> list[int]:
 
 
 def make_co_prime(frequencies: list[int]) -> list[int]:
+    """The code for this function seems wrong, but I don't know what I had intended to do wth it."""
     return [simplify_fraction(beat_frequencies) for beat_frequencies in frequencies]
 
 
