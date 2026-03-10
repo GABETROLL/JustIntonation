@@ -71,156 +71,6 @@ class Melody:
     beats_per_minute: float
     notes: list[list[Hertz | Note]]
 
-    @staticmethod
-    def _beats_per_beat(beats: Sequence[Sequence[Hertz | Note | Sequence]]) -> int:
-        print(f"{beats = }")
-
-        sub_lengths: set[int] = set()
-
-        for beat in beats:
-            print(f"{beat = }, {sub_lengths = }")
-
-            assert hasattr(beat, "__iter__") and hasattr(beat, "__len__")
-
-            for sequence in beat:
-                print(f"{sequence = }")
-
-                if hasattr(sequence, "__iter__") and hasattr(sequence, "__len__"):
-                    sub_length: int = Melody._beats_per_beat(sequence) * len(sequence)
-
-                    print(f"{sub_length = }")
-
-                    sub_lengths.add(sub_length)
-
-                    print(f"{sub_lengths = }")
-
-        sub_lengths: list[int] = list(sub_lengths)
-
-        print(f"{sub_lengths = }")
-
-        simplify_fraction(sub_lengths) # I appologize for making this algorithm so slow...
-
-        print(f"{sub_lengths = }")
-
-        result: int = product(sub_lengths)
-
-        print(f"{result = }")
-
-        return result
-
-    @staticmethod
-    def from_fractional_beats(
-        notes: Sequence[Sequence[Hertz | Note | Sequence]],
-        beats_per_beat: int | None = None,
-        original_beat_index: int | None = None,
-        out: list[list[Hertz | Note]] | None = None,
-    ) -> tuple[tuple[Hertz | Note]]:
-        """
-        Unwraps music from "rational beats" into a Melody.
-
-        Example with Cannon in D:
-
-        this:
-        [
-            [D, [[A], [[[FS],[G]]], [A], [[[FS],[G]]]]],
-            ...
-        ]
-        turns into:
-        [
-            [Note(D, duration_in_beats=8), Note(A, duration_in_beats=2)], [],
-            [FS], [G],
-            [Note(A, duration_in_beats=2)], [],
-            [FS], [G],
-            ...
-        ]
-
-        Explanation:
-
-        list of beats --> [
-            beat --> [
-                D,                          # <-- 8 beats total
-                list of beats --> [
-                    beat --> [A],           # <-- 2 beats total
-                    beat --> [
-                        list of beats --> [
-                            beat --> [FS],  # <-- 1 beat total
-                            beat --> [G],   # <-- 1 beat total
-                        ],
-                    ],
-                    beat --> [A],           # <-- 2 beats total
-                    beat --> [
-                        list of beats --> [
-                            beat --> [FS],  # <-- 1 beat total
-                            beat --> [G],   # <-- 1 beat total
-                        ],
-                    ],
-                ],
-            ],
-            ...
-        ]
-
-        This:
-
-        list of beats --> [             # 3 * 4 beats = 12 beats per beat. 2 beats * 12 beats per beat = 24 beats.
-            beat --> [
-                list of beats --> [     # 1 * 1 * 1 beat = 1 beat per beat. 3 beats * 1 beat per beat = 3 beats. 
-                    [C], [C], [C],
-                ],
-            ],
-            beat --> [
-                list of beats --> [     # 1 * 1 * 1 * 1 beat = 1 beat pear beat. 4 beats * 1 beat per beat = 4 beats.
-                    [D], [D], [D], [D],
-                ],
-            ],
-        ]
-
-        Turns into:
-
-        [
-            [Note(C, duration_in_beats=4)], [], [], [],
-            [Note(C, duration_in_beats=4)], [], [], [],
-            [Note(C, duration_in_beats=4)], [], [], [],
-            [Note(D, duration_in_beats=3)], [], [],
-            [Note(D, duration_in_beats=3)], [], [],
-            [Note(D, duration_in_beats=3)], [], [],
-            [Note(D, duration_in_beats=3)], [], [],
-        ]
-        """
-        if beats_per_beat is None:
-            beats_per_beat = Melody._beats_per_beat(notes) 
-
-        if out is None:
-            out = [[] for _ in range(beats_per_beat * len(notes))]
-        
-        if original_beat_index is None:
-            original_beat_index = 0
-
-        beat_index: int = original_beat_index
-
-        print(f"{beats_per_beat = }, {out = }, len(out) = {len(out)} {original_beat_index = }, {beat_index = }")
-
-        for local_beat_index, beat in enumerate(notes):
-            beat_index = original_beat_index + local_beat_index * beats_per_beat
-
-            print(f"{local_beat_index = }, {beat_index = }")
-
-            for item in beat:
-
-                print(f"{item = }")
-
-                if hasattr(item, "__iter__") and hasattr(item, "__len__"):
-                    Melody.from_fractional_beats(item, beats_per_beat // len(item), beat_index, out)
-                elif isinstance(item, Note):
-                    out[beat_index].append(
-                        Note(item.frequency, item.voice, item.amplitude, item.duration_in_beats * beats_per_beat)
-                    )
-                else:
-                    # Assume that if `item` is not a beat or a note, it must be a frequency.
-                    # TODO: MAKE DURATON CORRECT!
-                    out[beat_index].append(Note(item, duration_in_beats=beats_per_beat))
-
-        return out
-
 
 def octaves(note: int, n: int) -> tuple[int, ...]:
     """
@@ -317,10 +167,8 @@ def render_wave(
     default_voice: Callable[[numpy.ndarray], numpy.ndarray], default_amplitude: numpy.ScalarType = 1.0
 ) -> numpy.ndarray:
     samples_per_beat_rounded: int = sample_rate * 60 // melody.beats_per_minute
-
-    beats: int = len(melody.notes)
-
-    result: numpy.ndarray = numpy.zeros((samples_per_beat_rounded * beats,))
+    amount_of_beats: int = len(melody.notes)
+    result: numpy.ndarray = numpy.zeros((samples_per_beat_rounded * amount_of_beats,))
 
     # one_hertz_wave: numpy.ndarray = voice(
     #     numpy.arange(sample_rate) * 2 * numpy.pi / sample_rate
@@ -328,46 +176,55 @@ def render_wave(
 
     # print(f"result: {result.shape}, one_hertz_wave: {one_hertz_wave.shape}")
 
-    for beat_index, beat in enumerate(melody.notes):
-        start_sample_index: int = beat_index * samples_per_beat_rounded
+    def _render_wave(list_of_beats: Sequence[Sequence[Hertz | Note | Sequence]], samples_per_beat_rounded: int, sample_index: int):
+        for beat_index, beat in enumerate(list_of_beats):
+            start_sample_index: int = sample_index + samples_per_beat_rounded * beat_index
 
-        # Either it's a note, or just a frequency,
-        # which would default to an amplitude of 1.
-        for note in beat:
-            voice: Callable[[numpy.ndarray], numpy.ndarray] = default_voice
-            frequency: int = 1
-            amplitude: numpy.ScalarType = default_amplitude
-            duration_in_samples: int = samples_per_beat_rounded
+            for note in beat:
+                # note is a Sequence, and, so,
+                # i'm assuming that it's another list of beats!
+                if hasattr(note, "__len__") and hasattr(note, "__iter__"):
+                    _render_wave(note, samples_per_beat_rounded // len(note), start_sample_index)
 
-            end_sample_index: int = 0
+                    continue
 
-            if isinstance(note, Note):
-                frequency = note.frequency
-                if note.voice is not None:
-                    voice = note.voice
-                if note.amplitude is not None:
-                    amplitude = note.amplitude
-                duration_in_samples = note.duration_in_beats * samples_per_beat_rounded
-            else:
-                frequency: Hertz = note
+                voice: Callable[[numpy.ndarray], numpy.ndarray] = default_voice
+                frequency: int = 1
+                amplitude: numpy.ScalarType = default_amplitude
+                duration_in_samples: int = samples_per_beat_rounded
 
-            end_sample_index = start_sample_index + duration_in_samples
+                end_sample_index: int = 0
 
-            beat_wave: numpy.ndarray = voice(
-                get_sin_domain(start_sample_index, end_sample_index, frequency, sample_rate)
-            ) * amplitude
-            # TODO: MAKE PARAMETER !!!
+                if isinstance(note, Note):
+                    frequency = note.frequency
+                    if note.voice is not None:
+                        voice = note.voice
+                    if note.amplitude is not None:
+                        amplitude = note.amplitude
+                    duration_in_samples = note.duration_in_beats * samples_per_beat_rounded
+                else:
+                    frequency: Hertz = note
 
-            # beat_wave: numpy.ndarray = one_hertz_wave[::samples_per_frequency]
+                end_sample_index = start_sample_index + duration_in_samples
 
-            # print(f"Difference: {end_sample_index - start_sample_index}")
-            # print(f"one_hertz_wave: {one_hertz_wave.shape}, beat_wave: {beat_wave.shape}")
-            # print(f"range: {len(range(start_sample_index * frequency, end_sample_index * frequency, frequency))}")
+                beat_wave: numpy.ndarray = voice(
+                    get_sin_domain(start_sample_index, end_sample_index, frequency, sample_rate)
+                ) * amplitude
+                # TODO: MAKE PARAMETER !!!
+                # TODO: CHANGE
 
-            result[start_sample_index:end_sample_index] += beat_wave
+                # beat_wave: numpy.ndarray = one_hertz_wave[::samples_per_frequency]
+
+                # print(f"Difference: {end_sample_index - start_sample_index}")
+                # print(f"one_hertz_wave: {one_hertz_wave.shape}, beat_wave: {beat_wave.shape}")
+                # print(f"range: {len(range(start_sample_index * frequency, end_sample_index * frequency, frequency))}")
+
+                result[start_sample_index:end_sample_index] += beat_wave
 
         """ pyplot.plot(result[start_sample_index:end_sample_index])
         pyplot.show()
         pyplot.close() """
+
+    _render_wave(melody.notes, samples_per_beat_rounded, 0)
 
     return result
