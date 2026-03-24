@@ -14,7 +14,7 @@ D3 = (F3 * 27) >> 5       # 2 ** 5
 
 BEATS_PER_MINUTE = 320
 BEATS_PER_SECOND = BEATS_PER_MINUTE / 60
-SAMPLES_PER_BEAT_ROUNDED = int(SAMPLE_RATE / BEATS_PER_SECOND)
+SAMPLES_PER_BEAT = int(SAMPLE_RATE / BEATS_PER_SECOND)
 
 CHORD_AMPLITUDE = 0.4 / 4
 
@@ -22,7 +22,7 @@ VOICE_AMPLITUDE = 0.6
 
 
 melody = Melody(
-    BEATS_PER_MINUTE,
+    SAMPLES_PER_BEAT,
     [
         [
             Note(frequency, dampened_piano_wave, CHORD_AMPLITUDE, 8) # F3 / 8 or F0 (44Hz)

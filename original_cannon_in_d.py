@@ -33,16 +33,14 @@ C_SHARP_3, C_SHARP_4, C_SHARP_5, C_SHARP_6 = octaves(C_SHARP_2, 4)
 
 AMPLITUDE = 0.15
 
-BEATS_PER_MINUTE = 60
-"""
-SAMPLES_PER_MINUTE := (SAMPLE_RATE * 60) MUST be divisible by BEATS_PER_MINUTE!
-"""
+THIRTY_SECOND_NOTES_PER_SECOND = 8
+SAMPLES_PER_THIRTY_SECOND_NOTE = SAMPLE_RATE // THIRTY_SECOND_NOTES_PER_SECOND
 
 BASS_VOICE = violin_wave
 MELODY_VOICE = violin_wave
 
 bass = Melody(
-    BEATS_PER_MINUTE,
+    SAMPLES_PER_THIRTY_SECOND_NOTE << 3,
     [
         [D3],
         [A2],
@@ -57,7 +55,7 @@ bass = Melody(
 )
 
 violin_1 = Melody(
-    BEATS_PER_MINUTE,
+    SAMPLES_PER_THIRTY_SECOND_NOTE << 3,
     [
         [F_SHARP_5],
         [E5],
@@ -82,7 +80,7 @@ violin_1 = Melody(
 )
 
 violin_2 = Melody(
-    2 * BEATS_PER_MINUTE,
+    SAMPLES_PER_THIRTY_SECOND_NOTE << 2,
     [
         [D4],
         [F_SHARP_4],
@@ -114,7 +112,7 @@ violin_2 = Melody(
 )
 
 violin_3 = Melody(
-    4 * BEATS_PER_MINUTE,
+    SAMPLES_PER_THIRTY_SECOND_NOTE << 1,
     [
         [Note(B_FROM_D_4, duration_in_beats=2)], [],
         [Note(G4, duration_in_beats=2)], [],
@@ -148,7 +146,7 @@ violin_3 = Melody(
 )
 
 violin_4 = Melody(
-    2 * BEATS_PER_MINUTE,
+    SAMPLES_PER_THIRTY_SECOND_NOTE << 2,
     [
         [F_SHARP_4], [F_SHARP_5],
         [Note(E5, duration_in_beats=2)], [],
@@ -173,7 +171,7 @@ violin_4 = Melody(
 )
 
 violin_5 = Melody(
-    8 * BEATS_PER_MINUTE,
+    SAMPLES_PER_THIRTY_SECOND_NOTE,
     [
         [Note(A5, duration_in_beats=2)], [],
         [F_SHARP_5], [G5],
@@ -245,7 +243,7 @@ violin_5 = Melody(
 )
 
 violin_6 = Melody(
-    2 * BEATS_PER_MINUTE,
+    SAMPLES_PER_THIRTY_SECOND_NOTE << 2,
     [
         [D5], [],
         [C_SHARP_5], [],
@@ -267,7 +265,7 @@ violin_6 = Melody(
 )
 
 violin_7_1_3 = Melody(
-    4 * BEATS_PER_MINUTE,
+    SAMPLES_PER_THIRTY_SECOND_NOTE << 1,
     [
         [F_SHARP_5], [F_SHARP_4], [G4], [F_SHARP_4],
         [E4], [E5], [F_SHARP_5], [E5],
@@ -281,7 +279,7 @@ violin_7_1_3 = Melody(
 )
 
 violin_7_2 = Melody(
-    4 * BEATS_PER_MINUTE,
+    SAMPLES_PER_THIRTY_SECOND_NOTE << 1,
     [
         [F_SHARP_5], [F_SHARP_4], [G4], [F_SHARP_4],
         [E4], [E5], [F_SHARP_5], [E5],
@@ -295,7 +293,7 @@ violin_7_2 = Melody(
 )
 
 violin_8_1 = Melody(
-    4 * BEATS_PER_MINUTE,
+    SAMPLES_PER_THIRTY_SECOND_NOTE << 1,
     [
         [D4], [D5], [E5], [D5],
         [C_SHARP_5], [C_SHARP_4], [B_FROM_D_3], [C_SHARP_4], # ?
@@ -310,7 +308,7 @@ violin_8_1 = Melody(
 )
 
 violin_8_2_3 = Melody(
-    4 * BEATS_PER_MINUTE,
+    SAMPLES_PER_THIRTY_SECOND_NOTE << 1,
     [
         [D4], [D5], [E5], [D5],
         [C_SHARP_5], [C_SHARP_4], [D4], [C_SHARP_4], # ?
@@ -325,7 +323,7 @@ violin_8_2_3 = Melody(
 )
 
 violin_9 = Melody(
-    4 * BEATS_PER_MINUTE,
+    SAMPLES_PER_THIRTY_SECOND_NOTE << 1,
     [
         [F_SHARP_4], [A4], [A4], [A4],
         [A4], [A4], [A4], [A4],
@@ -340,7 +338,7 @@ violin_9 = Melody(
 )
 
 violin_10_1 = Melody(
-    4 * BEATS_PER_MINUTE,
+    SAMPLES_PER_THIRTY_SECOND_NOTE << 1,
     [
         [A4], [F_SHARP_5], [F_SHARP_5], [F_SHARP_5],
         [E5], [E5], [E5], [E5],
@@ -354,7 +352,7 @@ violin_10_1 = Melody(
 )
 
 violin_10_2_3 = Melody(
-    4 * BEATS_PER_MINUTE,
+    SAMPLES_PER_THIRTY_SECOND_NOTE << 1,
     [
         [A4], [F_SHARP_5], [F_SHARP_5], [F_SHARP_5],
         [E5], [E5], [E5], [E5],
@@ -363,12 +361,12 @@ violin_10_2_3 = Melody(
         [B_FROM_D_5], [B_FROM_D_5], [B_FROM_D_5], [B_FROM_D_5],
         [A5], [A5], [A5], [A5],
         [B_FROM_D_5], [B_FROM_D_5], [B_FROM_D_5], [B_FROM_D_5],
-        [C_SHARP_6], [C_SHARP_5], [C_SHARP_5], [C_SHARP_5],
+        [C_SHARP_6], [C_SHARP_5], [C_SHARP_5], [C_SHARP_5], # MISTAKE?
     ]
 )
 
 violin_11 = Melody(
-    8 * BEATS_PER_MINUTE,
+    SAMPLES_PER_THIRTY_SECOND_NOTE,
     [
         [Note(D5, duration_in_beats=2)], [], [D4], [E4],
         [Note(F_SHARP_4, duration_in_beats=2)], [], [Note(D4, duration_in_beats=2)], [],
@@ -409,7 +407,7 @@ violin_11 = Melody(
 )
 
 violin_12_1 = Melody(
-    4 * BEATS_PER_MINUTE,
+    SAMPLES_PER_THIRTY_SECOND_NOTE << 1,
     [
         [Note(A4, duration_in_beats=6)], [], [], [],
         [], [], [Note(A4, duration_in_beats=2)], [],
@@ -424,7 +422,7 @@ violin_12_1 = Melody(
 )
 
 violin_12_2_3 = Melody(
-    4 * BEATS_PER_MINUTE,
+    SAMPLES_PER_THIRTY_SECOND_NOTE << 1,
     [
         [Note(A4, duration_in_beats=6)], [], [], [],
         [], [], [Note(A4, duration_in_beats=2)], [],
@@ -439,7 +437,7 @@ violin_12_2_3 = Melody(
 )
 
 violin_13 = Melody(
-    4 * BEATS_PER_MINUTE,
+    SAMPLES_PER_THIRTY_SECOND_NOTE << 1,
     [
         [Note(D4, duration_in_beats=2)], [], [Note(D5, duration_in_beats=2)], [],
         [Note(C_SHARP_5, duration_in_beats=4)], [], [], [],
@@ -490,7 +488,7 @@ violin_13 = Melody(
 )
 
 violin_14 = Melody(
-    2 * BEATS_PER_MINUTE,
+    SAMPLES_PER_THIRTY_SECOND_NOTE << 2,
     [
         [F_SHARP_4], [Note(F_SHARP_5, duration_in_beats=2)],
         [], [E5],
@@ -505,7 +503,7 @@ violin_14 = Melody(
 )
 
 violin_15 = Melody(
-    4 * BEATS_PER_MINUTE,
+    SAMPLES_PER_THIRTY_SECOND_NOTE << 1,
     [
         [Note(A5, duration_in_beats=4)], [], [], [],
         [Note(A4, duration_in_beats=3)], [], [], [G4],
@@ -520,7 +518,7 @@ violin_15 = Melody(
 )
 
 violin_16_1_2 = Melody(
-    2 * BEATS_PER_MINUTE,
+    SAMPLES_PER_THIRTY_SECOND_NOTE << 2,
     [
         [D5], [D4],
         [C_SHARP_4], [C_SHARP_5],
@@ -535,7 +533,7 @@ violin_16_1_2 = Melody(
 )
 
 violin_17_1 = Melody(
-    4 * BEATS_PER_MINUTE,
+    SAMPLES_PER_THIRTY_SECOND_NOTE << 1,
     [
         [Note(F_SHARP_5, duration_in_beats=2)], [], [Note(F_SHARP_4, duration_in_beats=2)], [],
         [Note(E4, duration_in_beats=2)], [], [Note(E5, duration_in_beats=2)], [],
@@ -550,18 +548,15 @@ violin_17_1 = Melody(
 )
 
 end = Melody(
-    BEATS_PER_MINUTE,
+    SAMPLES_PER_THIRTY_SECOND_NOTE << 3,
     [
         [Note(D3, BASS_VOICE), A4, F_SHARP_5, D5],
     ],
 )
 
-SAMPLES_PER_BEAT = (SAMPLE_RATE * 60) // BEATS_PER_MINUTE
-"""
-MUST be a valid operation, WITHOUT any rounding errors!
-"""
+SAMPLES_PER_QUARTER_NOTE = SAMPLES_PER_THIRTY_SECOND_NOTE << 3
 
-SAMPLES_PER_BASS_SEQUENCE = 8 * SAMPLES_PER_BEAT
+SAMPLES_PER_BASS_SEQUENCE = 8 * SAMPLES_PER_QUARTER_NOTE
 
 bass_wave = numpy.tile(
     render_wave(bass, SAMPLE_RATE, BASS_VOICE, AMPLITUDE),

@@ -40,8 +40,11 @@ D1 = D2 / 2
 A1 = D2 * 2 / 3
 G0 = D2 * 1 / 3
 
+SAMPLES_PER_BEAT = SAMPLE_RATE >> 2
+# Each beat should be around a 4th of a second.
+
 melody: Melody = Melody(
-    240,
+    SAMPLES_PER_BEAT,
     [
         [Note(D3, duration_in_beats=4), Note(F_SHARP_5, duration_in_beats=2)], [],    # 5:1   2:1 = D3
         [Note(E5, duration_in_beats=2)], [],                                                  # 9:2   1:1 = D2

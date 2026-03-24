@@ -60,8 +60,13 @@ D6 = D3 * 8
 
 NOTE_AMPLITUDE = 1 / 6
 
+QUARTER_NOTES_PER_MINUTE = 45
+THIRTY_SECOND_NOTES_PER_MINUTE = QUARTER_NOTES_PER_MINUTE * 8
+SAMPLES_PER_MINUTE = SAMPLE_RATE * 60
+SAMPLES_PER_BEAT = SAMPLES_PER_MINUTE // THIRTY_SECOND_NOTES_PER_MINUTE
+
 intro_bass: Melody = Melody(
-    180,
+    SAMPLES_PER_BEAT << 1,
     [
         [D3],
         [A3],
@@ -106,7 +111,7 @@ intro_bass: Melody = Melody(
 )
 
 bass = Melody(
-    180,
+    SAMPLES_PER_BEAT << 1,
     [
         [D3],
         [A3],
@@ -151,7 +156,7 @@ bass = Melody(
 )
 
 melody = Melody(
-    360,
+    SAMPLES_PER_BEAT,
     [
         [D3],
         [D3],

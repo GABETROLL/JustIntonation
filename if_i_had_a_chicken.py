@@ -3,6 +3,8 @@
   D   A   E   B   F#  C#
 Bb  F   C   G   D
       Ab  Eb
+
+TODO: CHANGE TO SAMPLES PER BEAT
 """
 
 from music_player import *

@@ -17,8 +17,8 @@ C2 = C << 1
 NOTES = [C, D, E, F, G, A, B, C2]
 
 melody: Melody = Melody(
-    60,
+    SAMPLE_RATE,
     [[x, y] for x in NOTES for y in NOTES]
 )
 
-wave: numpy.ndarray = render_wave(melody, SAMPLE_RATE, sine_wave)
+wave: numpy.ndarray = render_wave(melody, SAMPLE_RATE, sine_wave, 0.3)

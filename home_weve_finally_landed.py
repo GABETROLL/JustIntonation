@@ -30,7 +30,7 @@ E0_5 = E0_4 << 1
 
 
 melody = Melody(
-    60 << 3,
+    SAMPLE_RATE >> 3,
     [
         [A2, D3, E0_3, F_SHARP_3],
         [A2, D3, E0_3, F_SHARP_3],
@@ -715,5 +715,5 @@ melody = Melody(
 )
 
 wave: numpy.ndarray = render_wave(
-    melody, SAMPLE_RATE, other, 1 / 7,
+    melody, SAMPLE_RATE, square_wave, 1 / 7,
 )

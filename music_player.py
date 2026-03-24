@@ -68,7 +68,7 @@ class Note:
 
 @dataclass
 class Melody:
-    beats_per_minute: float
+    samples_per_beat: int
     notes: list[list[Hertz | Note]]
 
 
@@ -104,7 +104,7 @@ def trumpet(domain: numpy.ndarray) -> numpy.ndarray:
         + numpy.sin(4 * domain) / 4 + numpy.sin(5 * domain) / 5 + numpy.sin(6 * domain) / 6
 
 
-def other(domain: numpy.ndarray) -> numpy.ndarray:
+def square_wave(domain: numpy.ndarray) -> numpy.ndarray:
     return (
         numpy.sin(domain) + numpy.sin(3 * domain) / 3 + numpy.sin(5 * domain) / 5
          + numpy.sin(7 * domain) / 7 + numpy.sin(9 * domain) / 9
@@ -166,9 +166,8 @@ def render_wave(
     melody: Melody, sample_rate: int,
     default_voice: Callable[[numpy.ndarray], numpy.ndarray], default_amplitude: numpy.ScalarType = 1.0
 ) -> numpy.ndarray:
-    samples_per_beat_rounded: int = sample_rate * 60 // melody.beats_per_minute
     amount_of_beats: int = len(melody.notes)
-    result: numpy.ndarray = numpy.zeros((samples_per_beat_rounded * amount_of_beats,))
+    result: numpy.ndarray = numpy.zeros((melody.samples_per_beat * amount_of_beats,))
 
     # one_hertz_wave: numpy.ndarray = voice(
     #     numpy.arange(sample_rate) * 2 * numpy.pi / sample_rate
@@ -225,6 +224,6 @@ def render_wave(
         pyplot.show()
         pyplot.close() """
 
-    _render_wave(melody.notes, samples_per_beat_rounded, 0)
+    _render_wave(melody.notes, melody.samples_per_beat, 0)
 
     return result
