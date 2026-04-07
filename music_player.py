@@ -67,6 +67,35 @@ class Note:
 
 
 @dataclass
+class Slide:
+    start_frequency: Hertz
+    end_frequency: Hertz
+    voice: Optional[Callable[[numpy.ndarray], numpy.ndarray]] = None
+    amplitude: Optional[float] = None # numpy.ScalarType, but dataclass doesn't allow it
+    duration_in_beats: int = 1
+
+    def get_domain(self, sample_rate: int, samples_per_beat: int) -> numpy.ndarray:
+        """
+        Gives the domain x, such that numpy.sin(x) returns the wave
+        that corresponds with a note that slides from `self.start_frequency` to `self.end_frequency`.
+
+        TODO: MAKE EXPONENTIAL.
+        """
+        duration_in_samples: int = self.duration_in_beats * samples_per_beat
+
+        u = self.start_frequency
+        v = self.end_frequency
+
+        x = numpy.arange(duration_in_samples, dtype=float)
+        y = x.copy()
+        y *= (v - u) / (2 * duration_in_samples) # off-by-one error?
+        y += u
+        y *= x * 2 * (numpy.pi / sample_rate)
+
+        return y
+
+
+@dataclass
 class Melody:
     samples_per_beat: int
     notes: list[list[Hertz | Note]]
@@ -194,8 +223,10 @@ def render_wave(
 
                 end_sample_index: int = 0
 
-                if isinstance(note, Note):
-                    frequency = note.frequency
+                if isinstance(note, Slide) or isinstance(note, Note):
+                    if isinstance(note, Note):
+                        frequency = note.frequency
+
                     if note.voice is not None:
                         voice = note.voice
                     if note.amplitude is not None:
@@ -206,9 +237,16 @@ def render_wave(
 
                 end_sample_index = start_sample_index + duration_in_samples
 
-                beat_wave: numpy.ndarray = voice(
-                    get_sin_domain(start_sample_index, end_sample_index, frequency, sample_rate)
-                ) * amplitude
+                if isinstance(note, Slide):
+                    domain: numpy.ndarray = note.get_domain(sample_rate, samples_per_beat_rounded)
+                else:
+                    domain: numpy.ndarray = get_sin_domain(
+                        start_sample_index, end_sample_index, frequency, sample_rate,
+                    )
+
+                print(domain)
+
+                beat_wave: numpy.ndarray = voice(domain) * amplitude
                 # TODO: MAKE PARAMETER !!!
                 # TODO: CHANGE
 

@@ -1,7 +1,7 @@
 import sounddevice
 import numpy
 from music_player import *
-from living_hope import wave
+from carameldansen import wave
 
 current_frame: int = 0
 
