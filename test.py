@@ -20,7 +20,7 @@ B3, B4, B5 = octaves(B2, 3)
 
 AMPLITUDE = 0.15
 
-MELODY_VOICE = square_wave
+MELODY_VOICE = sine_wave
 
 # 4, 5, 6, (15 / 16) * 4, (15 / 16) * 5, (15 / 16) * 6
 # 4, 5, 6, 15 / 4, (75 / 16), (45 / 8)

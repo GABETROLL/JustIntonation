@@ -86,13 +86,13 @@ class Slide:
         u = self.start_frequency
         v = self.end_frequency
 
-        x = numpy.arange(duration_in_samples, dtype=float)
-        y = x.copy()
-        y *= (v - u) / (2 * duration_in_samples) # off-by-one error?
-        y += u
-        y *= x * 2 * (numpy.pi / sample_rate)
+        base = (v / u) ** (1 / duration_in_samples)
 
-        return y
+        n = numpy.arange(duration_in_samples, dtype=float)
+        n = base ** n
+        n *= (1 / numpy.log(base)) * u * 2 * (numpy.pi / sample_rate)
+
+        return n
 
 
 @dataclass
