@@ -1,22 +1,13 @@
 from music_player import *
-from frequency_ratios import closest_multiple_in_log_scale
 from matplotlib import pyplot
 
-C2 = closest_multiple_in_log_scale(55 * 2 ** (3 / 12), 24) # A1 = 55Hz.
-D2 = C2 * 9 / 8
-E2 = C2 * 5 / 4
-F2 = C2 * 4 / 3
-G2 = C2 * 3 / 2
-A2 = C2 * 5 / 3
-B2 = C2 * 15 / 8
-
-C3, C4, C5, C6 = octaves(C2, 4)
-D3, D4, D5 = octaves(D2, 3)
-E3, E4, E5, E6 = octaves(E2, 4)
-F3, F4, F5 = octaves(F2, 3)
-G3, G4, G5 = octaves(G2, 3)
-A3, A4, A5 = octaves(A2, 3)
-B3, B4, B5 = octaves(B2, 3)
+ONE = 440
+THREE_ET = ONE * 2 ** (4 / 12)
+FIVE_ET = ONE * 2 ** (7 / 12)
+SEVEN_ET = ONE * 2 ** (11 / 12)
+THREE = int(ONE * 5 / 4)
+FIVE = int(ONE * 3 / 2)
+SEVEN = int(ONE * 15 / 8)
 
 AMPLITUDE = 0.15
 
@@ -87,26 +78,18 @@ MELODY_VOICE = sine_wave
 4, 7; 3, 7; 1, 2
 """
 
-SAMPLES_PER_BEAT = SAMPLE_RATE
+SAMPLES_PER_BEAT = SAMPLE_RATE * 3
 
-melody_notes: Sequence[Sequence[Hertz | Note | Sequence]] = [
-    [C2],
-    [Slide(C2, C6, duration_in_beats=8)],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [C6],
+melody_notes: Sequence[Sequence[Hertz | ObjectiveNote | Sequence]] = [
+    [ONE, THREE_ET, FIVE_ET, SEVEN_ET],
+    [ONE, THREE, FIVE, SEVEN],
 ]
 
-melody = Melody(SAMPLES_PER_BEAT, melody_notes)
+melody = ObjectiveMelody(SAMPLES_PER_BEAT, melody_notes)
 
 print(melody.notes)
 
-wave: numpy.ndarray = render_wave(melody, SAMPLE_RATE, MELODY_VOICE, 0.15)
+wave: numpy.ndarray = render_wave(melody, SAMPLE_RATE, MELODY_VOICE, AMPLITUDE)
 
 pyplot.plot(wave)
 pyplot.show()

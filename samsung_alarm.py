@@ -43,56 +43,56 @@ G0 = D2 * 1 / 3
 SAMPLES_PER_BEAT = SAMPLE_RATE >> 2
 # Each beat should be around a 4th of a second.
 
-melody: Melody = Melody(
+melody: ObjectiveMelody = ObjectiveMelody(
     SAMPLES_PER_BEAT,
     [
-        [Note(D3, duration_in_beats=4), Note(F_SHARP_5, duration_in_beats=2)], [],    # 5:1   2:1 = D3
-        [Note(E5, duration_in_beats=2)], [],                                                  # 9:2   1:1 = D2
-        [Note(C_SHARP_3, duration_in_beats=4), Note(F_SHARP_5, duration_in_beats=1)], # 16:3  5:8 = F_SHARP_1
-        [Note(A5, duration_in_beats=1)],                                                      # 32:5  3:8 = A0
-        [Note(D5, duration_in_beats=2)], [],                                                  # 64:15 1:8 = D_MINUS_1
-        [Note(B2, duration_in_beats=4), Note(F_SHARP_5, duration_in_beats=2)], [],    # 6:1   5:3 = B2
-        [Note(E5, duration_in_beats=2)], [],                                                  # 27:5  1:3 = G0
-        [Note(A2, duration_in_beats=4), Note(F_SHARP_5, duration_in_beats=1)],        # 20:3  1:2 = D1
-        [Note(A5, duration_in_beats=1)],                                                      # 8:1   3:2 = A2
-        [Note(D5, duration_in_beats=2)], [],                                                  # 16:3  1:2 = D1
-        [Note(G2, duration_in_beats=4), Note(G5, duration_in_beats=1)],               # 8:1   4:3 = G2
-        [Note(F_SHARP_5, duration_in_beats=1)],                                               # 15:2  2:3 = A1
-        [Note(E5, duration_in_beats=1)],                                                      # 27:4  1:3 = G0
-        [Note(D5, duration_in_beats=1)],                                                      # 6:1   4:3 = G2
-        [Note(A2, duration_in_beats=4), Note(C_SHARP_5, duration_in_beats=1)],        # 5:1   3:2 = A2
-        [Note(D5, duration_in_beats=1)],                                                      # 16:3  1:2 = D1
-        [Note(E5, duration_in_beats=1)],                                                      # 6:1   3:2 = A2
-        [Note(C_SHARP_5, duration_in_beats=1)],                                               # 5:1   3:2 = A2
-        [Note(D3, duration_in_beats=8), Note(D5, duration_in_beats=1)],               # 2:1   2:1 = D3
-        [Note(E5, duration_in_beats=1)],                                                      # 9:2   1:1 = D2
-        [Note(F_SHARP_5, duration_in_beats=1)],                                               # 5:1   2:1 = D3
-        [Note(G5, duration_in_beats=1)],                                                      # 16:3  2:3 = A1
-        [Note(A5, duration_in_beats=2)], [],                                                  # 6:1   2:1 = D3
-        [Note(A4, duration_in_beats=2)], [],                                                  # 3:1   2:1 = D3
-        [Note(D3, duration_in_beats=4), Note(F_SHARP_5, duration_in_beats=2)], [],    # 5:1   2:1 = D3
-        [Note(E5, duration_in_beats=2)], [],                                                  # 9:2   1:1 = D2
-        [Note(C_SHARP_3, duration_in_beats=4), Note(F_SHARP_5, duration_in_beats=1)], # 16:3  5:8 = F_SHARP_1
-        [Note(A5, duration_in_beats=1)],                                                      # 32:5  3:8 = A0
-        [Note(D5, duration_in_beats=2)], [],                                                  # 64:15 1:8 = D_MINUS_1
-        [Note(B2, duration_in_beats=4), Note(F_SHARP_5, duration_in_beats=2)], [],    # 6:1   5:3 = B2
-        [Note(E5, duration_in_beats=2)], [],                                                  # 27:5  1:3 = G0
-        [Note(A2, duration_in_beats=4), Note(F_SHARP_5, duration_in_beats=1)],        # 20:3  1:2 = D1
-        [Note(A5, duration_in_beats=1)],                                                      # 8:1   3:2 = A2
-        [Note(D5, duration_in_beats=2)], [],                                                  # 16:3  1:2 = D1
-        [Note(G2, duration_in_beats=4), Note(G5, duration_in_beats=1)],               # 8:1   4:3 = G2
-        [Note(F_SHARP_5, duration_in_beats=1)],                                               # 15:2  2:3 = A1
-        [Note(E5, duration_in_beats=1)],                                                      # 27:4  1:3 = G0
-        [Note(D5, duration_in_beats=1)],                                                      # 6:1   4:3 = G2
-        [Note(A2, duration_in_beats=4), Note(C_SHARP_5, duration_in_beats=1)],        # 5:1   3:2 = A2
-        [Note(D5, duration_in_beats=1)],                                                      # 16:3  1:2 = D1
-        [Note(E5, duration_in_beats=1)],                                                      # 6:1   3:2 = A2
-        [Note(C_SHARP_5, duration_in_beats=1)],                                               # 5:1   3:2 = A2
-        [Note(D3, duration_in_beats=8), Note(D5, duration_in_beats=1)],               # 4:1   2:1 = D3
-        [Note(A5, duration_in_beats=1)],                                                      # 6:1   2:1 = D3
-        [Note(F_SHARP_5, duration_in_beats=1)],                                               # 5:1   2:1 = D3
-        [Note(A5, duration_in_beats=1)],                                                      # 6:1   2:1 = D3
-        [Note(D5, duration_in_beats=4)], [], [], [],                                          # 4:1   2:1 = D3
+        [ObjectiveNote(D3, duration_in_beats=4), ObjectiveNote(F_SHARP_5, duration_in_beats=2)], [],    # 5:1   2:1 = D3
+        [ObjectiveNote(E5, duration_in_beats=2)], [],                                                  # 9:2   1:1 = D2
+        [ObjectiveNote(C_SHARP_3, duration_in_beats=4), ObjectiveNote(F_SHARP_5, duration_in_beats=1)], # 16:3  5:8 = F_SHARP_1
+        [ObjectiveNote(A5, duration_in_beats=1)],                                                      # 32:5  3:8 = A0
+        [ObjectiveNote(D5, duration_in_beats=2)], [],                                                  # 64:15 1:8 = D_MINUS_1
+        [ObjectiveNote(B2, duration_in_beats=4), ObjectiveNote(F_SHARP_5, duration_in_beats=2)], [],    # 6:1   5:3 = B2
+        [ObjectiveNote(E5, duration_in_beats=2)], [],                                                  # 27:5  1:3 = G0
+        [ObjectiveNote(A2, duration_in_beats=4), ObjectiveNote(F_SHARP_5, duration_in_beats=1)],        # 20:3  1:2 = D1
+        [ObjectiveNote(A5, duration_in_beats=1)],                                                      # 8:1   3:2 = A2
+        [ObjectiveNote(D5, duration_in_beats=2)], [],                                                  # 16:3  1:2 = D1
+        [ObjectiveNote(G2, duration_in_beats=4), ObjectiveNote(G5, duration_in_beats=1)],               # 8:1   4:3 = G2
+        [ObjectiveNote(F_SHARP_5, duration_in_beats=1)],                                               # 15:2  2:3 = A1
+        [ObjectiveNote(E5, duration_in_beats=1)],                                                      # 27:4  1:3 = G0
+        [ObjectiveNote(D5, duration_in_beats=1)],                                                      # 6:1   4:3 = G2
+        [ObjectiveNote(A2, duration_in_beats=4), ObjectiveNote(C_SHARP_5, duration_in_beats=1)],        # 5:1   3:2 = A2
+        [ObjectiveNote(D5, duration_in_beats=1)],                                                      # 16:3  1:2 = D1
+        [ObjectiveNote(E5, duration_in_beats=1)],                                                      # 6:1   3:2 = A2
+        [ObjectiveNote(C_SHARP_5, duration_in_beats=1)],                                               # 5:1   3:2 = A2
+        [ObjectiveNote(D3, duration_in_beats=8), ObjectiveNote(D5, duration_in_beats=1)],               # 2:1   2:1 = D3
+        [ObjectiveNote(E5, duration_in_beats=1)],                                                      # 9:2   1:1 = D2
+        [ObjectiveNote(F_SHARP_5, duration_in_beats=1)],                                               # 5:1   2:1 = D3
+        [ObjectiveNote(G5, duration_in_beats=1)],                                                      # 16:3  2:3 = A1
+        [ObjectiveNote(A5, duration_in_beats=2)], [],                                                  # 6:1   2:1 = D3
+        [ObjectiveNote(A4, duration_in_beats=2)], [],                                                  # 3:1   2:1 = D3
+        [ObjectiveNote(D3, duration_in_beats=4), ObjectiveNote(F_SHARP_5, duration_in_beats=2)], [],    # 5:1   2:1 = D3
+        [ObjectiveNote(E5, duration_in_beats=2)], [],                                                  # 9:2   1:1 = D2
+        [ObjectiveNote(C_SHARP_3, duration_in_beats=4), ObjectiveNote(F_SHARP_5, duration_in_beats=1)], # 16:3  5:8 = F_SHARP_1
+        [ObjectiveNote(A5, duration_in_beats=1)],                                                      # 32:5  3:8 = A0
+        [ObjectiveNote(D5, duration_in_beats=2)], [],                                                  # 64:15 1:8 = D_MINUS_1
+        [ObjectiveNote(B2, duration_in_beats=4), ObjectiveNote(F_SHARP_5, duration_in_beats=2)], [],    # 6:1   5:3 = B2
+        [ObjectiveNote(E5, duration_in_beats=2)], [],                                                  # 27:5  1:3 = G0
+        [ObjectiveNote(A2, duration_in_beats=4), ObjectiveNote(F_SHARP_5, duration_in_beats=1)],        # 20:3  1:2 = D1
+        [ObjectiveNote(A5, duration_in_beats=1)],                                                      # 8:1   3:2 = A2
+        [ObjectiveNote(D5, duration_in_beats=2)], [],                                                  # 16:3  1:2 = D1
+        [ObjectiveNote(G2, duration_in_beats=4), ObjectiveNote(G5, duration_in_beats=1)],               # 8:1   4:3 = G2
+        [ObjectiveNote(F_SHARP_5, duration_in_beats=1)],                                               # 15:2  2:3 = A1
+        [ObjectiveNote(E5, duration_in_beats=1)],                                                      # 27:4  1:3 = G0
+        [ObjectiveNote(D5, duration_in_beats=1)],                                                      # 6:1   4:3 = G2
+        [ObjectiveNote(A2, duration_in_beats=4), ObjectiveNote(C_SHARP_5, duration_in_beats=1)],        # 5:1   3:2 = A2
+        [ObjectiveNote(D5, duration_in_beats=1)],                                                      # 16:3  1:2 = D1
+        [ObjectiveNote(E5, duration_in_beats=1)],                                                      # 6:1   3:2 = A2
+        [ObjectiveNote(C_SHARP_5, duration_in_beats=1)],                                               # 5:1   3:2 = A2
+        [ObjectiveNote(D3, duration_in_beats=8), ObjectiveNote(D5, duration_in_beats=1)],               # 4:1   2:1 = D3
+        [ObjectiveNote(A5, duration_in_beats=1)],                                                      # 6:1   2:1 = D3
+        [ObjectiveNote(F_SHARP_5, duration_in_beats=1)],                                               # 5:1   2:1 = D3
+        [ObjectiveNote(A5, duration_in_beats=1)],                                                      # 6:1   2:1 = D3
+        [ObjectiveNote(D5, duration_in_beats=4)], [], [], [],                                          # 4:1   2:1 = D3
     ],
 )
 

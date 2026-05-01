@@ -59,15 +59,15 @@ SAMPLE_RATE = 14400
 
 
 @dataclass
-class Note:
-    frequency: Hertz # TODO: THIS CHANGE BREAKS LOTS OF FILES!
+class ObjectiveNote:
+    frequency: Hertz | NoteRatio # TODO: THIS CHANGE BREAKS LOTS OF FILES!
     voice: Optional[Callable[[numpy.ndarray], numpy.ndarray]] = None
     amplitude: Optional[float] = None # numpy.ScalarType, but dataclass doesn't allow it
     duration_in_beats: int = 1
 
 
 @dataclass
-class Slide:
+class ObjectiveSlide:
     start_frequency: Hertz
     end_frequency: Hertz
     voice: Optional[Callable[[numpy.ndarray], numpy.ndarray]] = None
@@ -96,9 +96,9 @@ class Slide:
 
 
 @dataclass
-class Melody:
+class ObjectiveMelody:
     samples_per_beat: int
-    notes: list[list[Hertz | Note]]
+    notes: list[list[Hertz | ObjectiveNote]]
 
 
 def octaves(note: int, n: int) -> tuple[int, ...]:
@@ -120,8 +120,8 @@ def notes(
     voice: Callable[[numpy.ndarray], numpy.ndarray] | None = None,
     amplitude: float | None = None,
     duration_in_beats: int = 1,
-) -> tuple[Note, ...]:
-    return tuple(Note(f, voice=voice, amplitude=amplitude, duration_in_beats=duration_in_beats) for f in frequencies)
+) -> tuple[ObjectiveNote, ...]:
+    return tuple(ObjectiveNote(f, voice=voice, amplitude=amplitude, duration_in_beats=duration_in_beats) for f in frequencies)
 
 
 def _dampen(samples: int) -> numpy.ndarray:
@@ -162,6 +162,23 @@ def dampened_piano_wave(domain: numpy.ndarray, amplitude: float = 1.0) -> numpy.
     return piano_wave(domain) * _dampen(domain.size) * amplitude
 
 
+def shaven_note(voice: Callable[[numpy.ndarray], numpy.ndarray], samples_to_shave: int) -> Callable[[numpy.ndarray], numpy.ndarray]:
+    def inner(domain: numpy.ndarray) -> numpy.ndarray:
+        result = voice(domain)
+
+        # shave at left of result
+
+        assert result.ndim == 1
+
+        if len(result) <= samples_to_shave:
+            return numpy.zeros(shape=(len(result),))
+
+        # TODO: FINISH
+        return result
+
+    return inner
+
+
 def violin_wave(domain: numpy.ndarray, amplitude: float = 1.0) -> numpy.ndarray:
     HARMONICS_DB = [-33, -38, -51, -55, -54, -65, -61, -65, -71, -81, -76, -78, -78, -80, -78, -90, -83, -81, None, -79, -86]
     harmonics_pressure = [(10 ** ((h + 20) / 20)) * amplitude if h is not None else 0 for h in HARMONICS_DB]
@@ -192,7 +209,7 @@ def get_sin_domain(start_sample_index: int, end_sample_index: int, frequency: in
 
 
 def render_wave(
-    melody: Melody, sample_rate: int,
+    melody: ObjectiveMelody, sample_rate: int,
     default_voice: Callable[[numpy.ndarray], numpy.ndarray], default_amplitude: numpy.ScalarType = 1.0
 ) -> numpy.ndarray:
     amount_of_beats: int = len(melody.notes)
@@ -204,7 +221,7 @@ def render_wave(
 
     # print(f"result: {result.shape}, one_hertz_wave: {one_hertz_wave.shape}")
 
-    def _render_wave(list_of_beats: Sequence[Sequence[Hertz | Note | Sequence]], samples_per_beat_rounded: int, sample_index: int):
+    def _render_wave(list_of_beats: Sequence[Sequence[Hertz | ObjectiveNote | Sequence]], samples_per_beat_rounded: int, sample_index: int):
         for beat_index, beat in enumerate(list_of_beats):
             start_sample_index: int = sample_index + samples_per_beat_rounded * beat_index
 
@@ -223,8 +240,8 @@ def render_wave(
 
                 end_sample_index: int = 0
 
-                if isinstance(note, Slide) or isinstance(note, Note):
-                    if isinstance(note, Note):
+                if isinstance(note, ObjectiveSlide) or isinstance(note, ObjectiveNote):
+                    if isinstance(note, ObjectiveNote):
                         frequency = note.frequency
 
                     if note.voice is not None:
@@ -237,7 +254,7 @@ def render_wave(
 
                 end_sample_index = start_sample_index + duration_in_samples
 
-                if isinstance(note, Slide):
+                if isinstance(note, ObjectiveSlide):
                     domain: numpy.ndarray = note.get_domain(sample_rate, samples_per_beat_rounded)
                 else:
                     domain: numpy.ndarray = get_sin_domain(
