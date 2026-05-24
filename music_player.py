@@ -1,17 +1,45 @@
 import numpy
 from frequency_ratios import simplify_fraction, product
 from dataclasses import dataclass
-from typing import Sequence, Callable, Optional
+from typing import Sequence, Callable, Optional, Union
 # from matplotlib import pyplot
 
 Hertz: type = int
 
-"""
-@dataclass
-class Fraction:
-    numerator: int
-    denominator: int
 
+class Fraction:
+    def __init__(self, numerator: int, denominator: int) -> None:
+        if not isinstance(numerator, int):
+            raise TypeError(f"numerator must be int. Got: {numerator}, of type {type(numerator)}")
+        if not isinstance(denominator, int):
+            raise TypeError(f"denominator must be int. Got: {denominator}, of type {type(denominator)}")
+        if denominator == 0:
+            raise ValueError(f"denominator can't be 0 for a fraction. Got: {denominator}.")
+
+        self.numerator = numerator
+        self.denominator = denominator
+    
+    def __str__(self):
+        return f"\{self.numerator} / {self.denominator}\\"
+
+    def __repr__(self):
+        return f"Fraction({self.numerator}, {self.denominator})"
+
+    def __mul__(self, other):
+        """
+        Returns `self` multiplied by `other`.
+        
+        if `other` is an instance of `Fraction`, this method will return the product of the two fractions
+        (like how it's taught in elementary/primary school, these are the "Rational numbers").
+        if `other` is anything else, this method will return a copy of `self`, with its
+        numerator multiplied by `other`.
+        """
+        if isinstance(other, Fraction):
+            return Fraction(self.numerator * other.numerator, self.denominator * other.denominator)
+        return Fraction(self.numerator * other, self.denominator)
+
+    def as_float(self) -> float:
+        return self.numerator / self.denominator
 
 @dataclass
 class NoteRatio:
@@ -19,20 +47,32 @@ class NoteRatio:
     ratio: Fraction
 
 
-@dataclass
 class Note:
-    id_number: int
-    beat: int
-    duration_in_beats: int
-    value: NoteRatio | Hertz
+    def __init__(
+        self,
+        frequency: Hertz | Fraction | NoteRatio,
+        voice: Optional[Callable[[numpy.ndarray], numpy.ndarray]] = None,
+        amplitude: Union[Union[numpy.ScalarType], None] = None,
+        duration_in_beats: int = 1,
+        note_id: int = None,
+    ) -> None:
+        if note_id is not None and not isinstance(note_id, int):
+            raise TypeError(f"Note's id must be an int. Got: {note_id}, of type: {type(note_id)}.")
+        if not isinstance(frequency, (Hertz, Fraction, NoteRatio)):
+            raise TypeError(f"Note's frequency must be an int or a Fraction (measured in Hertz), or a NoteRatio. Got: {frequency}, of type: {type(frequency)}.")
+        if amplitude is not None and not isinstance(amplitude, numpy.ScalarType):
+            raise TypeError(f"Note's voice must be a numpy.ScalarType. Got: {amplitude}, of type: {type(amplitude)}.")
+        if not isinstance(duration_in_beats, int):
+            raise TypeError(f"Note's duration_in_beats must be an int. Got: {duration_in_beats}, of type: {type(duration_in_beats)}.")
+
+        self.id = note_id
+        self.frequency = frequency
+        self.voice = voice
+        self.amplitude = amplitude
+        self.duration_in_beats = duration_in_beats
 
 
-@dataclass
-class Melody:
-    tempo: float
-    notes: list[Note]
-
-
+"""
 class MusicAsRatios:
     def __init__(self, notes: list[Melody]):
         # TODO: VALIDATE NOTES
@@ -59,32 +99,27 @@ SAMPLE_RATE = 14400
 
 
 @dataclass
-class ObjectiveNote:
-    frequency: Hertz | NoteRatio # TODO: THIS CHANGE BREAKS LOTS OF FILES!
+class Slide:
+    start_frequency: Hertz | NoteRatio
+    end_frequency: Hertz | NoteRatio
     voice: Optional[Callable[[numpy.ndarray], numpy.ndarray]] = None
     amplitude: Optional[float] = None # numpy.ScalarType, but dataclass doesn't allow it
     duration_in_beats: int = 1
+    id: int = None
 
-
-@dataclass
-class ObjectiveSlide:
-    start_frequency: Hertz
-    end_frequency: Hertz
-    voice: Optional[Callable[[numpy.ndarray], numpy.ndarray]] = None
-    amplitude: Optional[float] = None # numpy.ScalarType, but dataclass doesn't allow it
-    duration_in_beats: int = 1
-
-    def get_domain(self, sample_rate: int, samples_per_beat: int) -> numpy.ndarray:
+    @staticmethod
+    def get_domain(duration_in_beats: int, start_frequency: int, end_frequency: int, sample_rate: int, samples_per_beat: int) -> numpy.ndarray:
         """
         Gives the domain x, such that numpy.sin(x) returns the wave
         that corresponds with a note that slides from `self.start_frequency` to `self.end_frequency`.
 
-        TODO: MAKE EXPONENTIAL.
+        (i think this is already made so that the slide seems linear on a piano)
+        TODO: ALLOW FRACTIONS!
         """
-        duration_in_samples: int = self.duration_in_beats * samples_per_beat
+        duration_in_samples: int = duration_in_beats * samples_per_beat
 
-        u = self.start_frequency
-        v = self.end_frequency
+        u = start_frequency
+        v = end_frequency
 
         base = (v / u) ** (1 / duration_in_samples)
 
@@ -96,9 +131,9 @@ class ObjectiveSlide:
 
 
 @dataclass
-class ObjectiveMelody:
+class Melody:
     samples_per_beat: int
-    notes: list[list[Hertz | ObjectiveNote]]
+    notes: list[list[Hertz | Fraction | Note | Slide]]
 
 
 def octaves(note: int, n: int) -> tuple[int, ...]:
@@ -116,12 +151,12 @@ def octaves(note: int, n: int) -> tuple[int, ...]:
 
 
 def notes(
-    frequencies: Sequence[Hertz],
+    frequencies: Sequence[Hertz | Fraction],
     voice: Callable[[numpy.ndarray], numpy.ndarray] | None = None,
     amplitude: float | None = None,
     duration_in_beats: int = 1,
-) -> tuple[ObjectiveNote, ...]:
-    return tuple(ObjectiveNote(f, voice=voice, amplitude=amplitude, duration_in_beats=duration_in_beats) for f in frequencies)
+) -> tuple[Note, ...]:
+    return tuple(Note(f, voice=voice, amplitude=amplitude, duration_in_beats=duration_in_beats) for f in frequencies)
 
 
 def _dampen(samples: int) -> numpy.ndarray:
@@ -204,12 +239,16 @@ def violin_wave(domain: numpy.ndarray, amplitude: float = 1.0) -> numpy.ndarray:
     return wave
 
 
-def get_sin_domain(start_sample_index: int, end_sample_index: int, frequency: int, sample_rate: int) -> numpy.ndarray:
+def get_sin_domain(start_sample_index: int, end_sample_index: int, frequency: int | Fraction, sample_rate: int) -> numpy.ndarray:
+    # TODO: THS S CHEATNG!!! T (should be) PERFECT FRACTONS!
+    if isinstance(frequency, Fraction):
+        frequency = frequency.as_float()
+
     return numpy.arange(start_sample_index, end_sample_index) * frequency % sample_rate * 2 * (numpy.pi / sample_rate)
 
 
 def render_wave(
-    melody: ObjectiveMelody, sample_rate: int,
+    melody: Melody, sample_rate: int,
     default_voice: Callable[[numpy.ndarray], numpy.ndarray], default_amplitude: numpy.ScalarType = 1.0
 ) -> numpy.ndarray:
     amount_of_beats: int = len(melody.notes)
@@ -221,7 +260,9 @@ def render_wave(
 
     # print(f"result: {result.shape}, one_hertz_wave: {one_hertz_wave.shape}")
 
-    def _render_wave(list_of_beats: Sequence[Sequence[Hertz | ObjectiveNote | Sequence]], samples_per_beat_rounded: int, sample_index: int):
+    note_values: dict[int, Union[int, float]] = {}
+
+    def _render_wave(list_of_beats: Sequence[Sequence[Hertz | Note | Slide | Fraction | Sequence]], samples_per_beat_rounded: int, sample_index: int):
         for beat_index, beat in enumerate(list_of_beats):
             start_sample_index: int = sample_index + samples_per_beat_rounded * beat_index
 
@@ -240,9 +281,21 @@ def render_wave(
 
                 end_sample_index: int = 0
 
-                if isinstance(note, ObjectiveSlide) or isinstance(note, ObjectiveNote):
-                    if isinstance(note, ObjectiveNote):
-                        frequency = note.frequency
+                if isinstance(note, Slide) or isinstance(note, Note):
+                    if isinstance(note, Note):
+                        if isinstance(note.frequency, NoteRatio):
+
+                            if note.frequency.other_note_id not in note_values:
+                                raise LookupError(f"Note with other note id: {note.frequency.other_note_id} not found.")
+
+                            frequency = note.frequency.ratio * note_values[note.frequency.other_note_id]
+                        else:
+                            # Wether `note.frequency` turns out to be a Fraction
+                            # or an integer, the `get_sin_domain` later in this code
+                            # should handle it.
+                            frequency = note.frequency
+
+                    note_values[note.id] = frequency
 
                     if note.voice is not None:
                         voice = note.voice
@@ -250,18 +303,22 @@ def render_wave(
                         amplitude = note.amplitude
                     duration_in_samples = note.duration_in_beats * samples_per_beat_rounded
                 else:
-                    frequency: Hertz = note
+                    # Wether `note.frequency` turns out to be a Fraction
+                    # or an integer, the `get_sin_domain` later in this code
+                    # should handle it.
+                    frequency = note
 
                 end_sample_index = start_sample_index + duration_in_samples
 
-                if isinstance(note, ObjectiveSlide):
-                    domain: numpy.ndarray = note.get_domain(sample_rate, samples_per_beat_rounded)
+                if isinstance(note, Slide):
+                    domain: numpy.ndarray = note.get_domain(note.duration_in_beats, note.start_frequency, note.end_frequency, sample_rate, samples_per_beat_rounded)
                 else:
+                    # in here, `get_sin_domain` should handle both integer and fraction frequencies.
                     domain: numpy.ndarray = get_sin_domain(
                         start_sample_index, end_sample_index, frequency, sample_rate,
                     )
 
-                print(domain)
+                print(frequency)
 
                 beat_wave: numpy.ndarray = voice(domain) * amplitude
                 # TODO: MAKE PARAMETER !!!
