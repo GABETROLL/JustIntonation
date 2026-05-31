@@ -16,7 +16,7 @@ C2 = C << 1
 
 NOTES = [C, D, E, F, G, A, B, C2]
 
-melody: ObjectiveMelody = ObjectiveMelody(
+melody: Melody = Melody(
     SAMPLE_RATE,
     [[x, y] for x in NOTES for y in NOTES]
 )

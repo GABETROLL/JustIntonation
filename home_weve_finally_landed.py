@@ -29,7 +29,7 @@ E0_5 = E0_4 << 1
 
 
 
-melody = ObjectiveMelody(
+melody = Melody(
     SAMPLE_RATE >> 3,
     [
         [A2, D3, E0_3, F_SHARP_3],

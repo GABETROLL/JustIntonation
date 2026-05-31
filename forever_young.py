@@ -98,6 +98,6 @@ notes = [
 BEATS_PER_MINUTE = 240
 SAMPLES_PER_BEAT = SAMPLE_RATE // (BEATS_PER_MINUTE // 60)
 
-melody = ObjectiveMelody(SAMPLES_PER_BEAT, notes)
+melody = Melody(SAMPLES_PER_BEAT, notes)
 
 wave = render_wave(melody, SAMPLE_RATE, sine_wave, 1 / 10)

@@ -80,12 +80,12 @@ MELODY_VOICE = sine_wave
 
 SAMPLES_PER_BEAT = SAMPLE_RATE * 3
 
-melody_notes: Sequence[Sequence[Hertz | ObjectiveNote | Sequence]] = [
+melody_notes: Sequence[Sequence[Hertz | Note | Sequence]] = [
     [ONE, THREE_ET, FIVE_ET, SEVEN_ET],
     [ONE, THREE, FIVE, SEVEN],
 ]
 
-melody = ObjectiveMelody(SAMPLES_PER_BEAT, melody_notes)
+melody = Melody(SAMPLES_PER_BEAT, melody_notes)
 
 print(melody.notes)
 

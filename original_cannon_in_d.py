@@ -5,21 +5,21 @@ C   G   D   A   E   B
 
 from music_player import (
     numpy,
-    ObjectiveNote, ObjectiveMelody, octaves,
+    Fraction, Note, Melody, octaves,
     SAMPLE_RATE,
     violin_wave,
     render_wave
 )
 
 D2 = 144
-E2 = D2 * 9 / 8
-F_SHARP_2 = D2 * 5 / 4
-G2 = D2 * 4 / 3
-A2 = D2 * 3 / 2
-B_FROM_D_2 = D2 * 5 / 3
-B_FROM_E_2 = D2 * 27 / 16
-C2 = D2 * 8 / 9
-C_SHARP_2 = D2 * 15 / 16
+E2 = Fraction(D2 * 9, 8)
+F_SHARP_2 = Fraction(D2 * 5, 4)
+G2 = Fraction(D2 * 4, 3)
+A2 = Fraction(D2 * 3, 2)
+B_FROM_D_2 = Fraction(D2 * 5, 3)
+B_FROM_E_2 = Fraction(D2 * 27, 16)
+C2 = Fraction(D2 * 8, 9)
+C_SHARP_2 = Fraction(D2 * 15, 16)
 
 D3, D4, D5, D6 = octaves(D2, 4)
 E3, E4, E5 = octaves(E2, 3)
@@ -39,7 +39,7 @@ SAMPLES_PER_THIRTY_SECOND_NOTE = SAMPLE_RATE // THIRTY_SECOND_NOTES_PER_SECOND
 BASS_VOICE = violin_wave
 MELODY_VOICE = violin_wave
 
-bass = ObjectiveMelody(
+bass = Melody(
     SAMPLES_PER_THIRTY_SECOND_NOTE << 3,
     [
         [D3],
@@ -54,7 +54,7 @@ bass = ObjectiveMelody(
     ],
 )
 
-violin_1 = ObjectiveMelody(
+violin_1 = Melody(
     SAMPLES_PER_THIRTY_SECOND_NOTE << 3,
     [
         [F_SHARP_5],
@@ -79,7 +79,7 @@ violin_1 = ObjectiveMelody(
     ],
 )
 
-violin_2 = ObjectiveMelody(
+violin_2 = Melody(
     SAMPLES_PER_THIRTY_SECOND_NOTE << 2,
     [
         [D4],
@@ -111,16 +111,16 @@ violin_2 = ObjectiveMelody(
     ],
 )
 
-violin_3 = ObjectiveMelody(
+violin_3 = Melody(
     SAMPLES_PER_THIRTY_SECOND_NOTE << 1,
     [
-        [ObjectiveNote(B_FROM_D_4, duration_in_beats=2)], [],
-        [ObjectiveNote(G4, duration_in_beats=2)], [],
-        [ObjectiveNote(A4, duration_in_beats=2)], [],
-        [ObjectiveNote(F_SHARP_4, duration_in_beats=2)], [],
-        [ObjectiveNote(D4, duration_in_beats=2)], [],
-        [ObjectiveNote(D5, duration_in_beats=2)], [],
-        [ObjectiveNote(D5, duration_in_beats=3)], [],
+        [Note(B_FROM_D_4, duration_in_beats=2)], [],
+        [Note(G4, duration_in_beats=2)], [],
+        [Note(A4, duration_in_beats=2)], [],
+        [Note(F_SHARP_4, duration_in_beats=2)], [],
+        [Note(D4, duration_in_beats=2)], [],
+        [Note(D5, duration_in_beats=2)], [],
+        [Note(D5, duration_in_beats=3)], [],
         [], [C_SHARP_5],
 
         [D5], [C_SHARP_5], [D5], [D4],
@@ -145,95 +145,95 @@ violin_3 = ObjectiveMelody(
     ],
 )
 
-violin_4 = ObjectiveMelody(
+violin_4 = Melody(
     SAMPLES_PER_THIRTY_SECOND_NOTE << 2,
     [
         [F_SHARP_4], [F_SHARP_5],
-        [ObjectiveNote(E5, duration_in_beats=2)], [],
+        [Note(E5, duration_in_beats=2)], [],
         [], [D5],
-        [ObjectiveNote(F_SHARP_5, duration_in_beats=2)], [],
+        [Note(F_SHARP_5, duration_in_beats=2)], [],
 
-        [ObjectiveNote(B_FROM_D_5, duration_in_beats=2)], [],
-        [ObjectiveNote(A5, duration_in_beats=2)], [],
-        [ObjectiveNote(B_FROM_D_5, duration_in_beats=2)], [],
-        [ObjectiveNote(C_SHARP_6, duration_in_beats=2)], [],
+        [Note(B_FROM_D_5, duration_in_beats=2)], [],
+        [Note(A5, duration_in_beats=2)], [],
+        [Note(B_FROM_D_5, duration_in_beats=2)], [],
+        [Note(C_SHARP_6, duration_in_beats=2)], [],
 
         [D6], [D5],
-        [ObjectiveNote(C_SHARP_5, duration_in_beats=2)], [],
+        [Note(C_SHARP_5, duration_in_beats=2)], [],
         [], [B_FROM_D_4],
-        [ObjectiveNote(D5, duration_in_beats=2)], [],
+        [Note(D5, duration_in_beats=2)], [],
 
-        [ObjectiveNote(D5, duration_in_beats=3)], [],
+        [Note(D5, duration_in_beats=3)], [],
         [], [D5],
         [D5], [G5],
         [E5], [A5],
     ],
 )
 
-violin_5 = ObjectiveMelody(
+violin_5 = Melody(
     SAMPLES_PER_THIRTY_SECOND_NOTE,
     [
-        [ObjectiveNote(A5, duration_in_beats=2)], [],
+        [Note(A5, duration_in_beats=2)], [],
         [F_SHARP_5], [G5],
-        [ObjectiveNote(A5, duration_in_beats=2)], [],
+        [Note(A5, duration_in_beats=2)], [],
         [F_SHARP_5], [G5],
         [A5], [A4],
         [B_FROM_E_4], [C_SHARP_5],
         [D5], [E5],
         [F_SHARP_5], [G5],
-        [ObjectiveNote(F_SHARP_5, duration_in_beats=2)], [],
+        [Note(F_SHARP_5, duration_in_beats=2)], [],
         [D5], [E5],
-        [ObjectiveNote(F_SHARP_5, duration_in_beats=2)], [],
+        [Note(F_SHARP_5, duration_in_beats=2)], [],
         [F_SHARP_4], [G4],
         [A4], [B_FROM_D_4],
         [A4], [G4],
         [A4], [F_SHARP_4],
         [G4], [A4],
 
-        [ObjectiveNote(G4, duration_in_beats=2)], [],
+        [Note(G4, duration_in_beats=2)], [],
         [B_FROM_D_4], [A4],
-        [ObjectiveNote(G4, duration_in_beats=2)], [],
+        [Note(G4, duration_in_beats=2)], [],
         [F_SHARP_4], [E4],
         [F_SHARP_4], [E4],
         [D4], [E4],
         [F_SHARP_4], [G4],
         [A4], [B_FROM_D_4],
-        [ObjectiveNote(G4, duration_in_beats=2)], [],
+        [Note(G4, duration_in_beats=2)], [],
         [B_FROM_D_4], [A4],
-        [ObjectiveNote(B_FROM_D_4, duration_in_beats=2)], [],
+        [Note(B_FROM_D_4, duration_in_beats=2)], [],
         [C_SHARP_5], [D5],
         [A4], [B_FROM_D_4], # ?
         [C_SHARP_5], [D5],
         [E5], [F_SHARP_5],
         [G5], [A5],         # ?
 
-        [ObjectiveNote(F_SHARP_5, duration_in_beats=2)], [],
+        [Note(F_SHARP_5, duration_in_beats=2)], [],
         [D5], [E5],
-        [ObjectiveNote(F_SHARP_5, duration_in_beats=2)], [],
+        [Note(F_SHARP_5, duration_in_beats=2)], [],
         [E5], [D4],
         [E5], [C_SHARP_5],
         [D5], [E5],
         [F_SHARP_5], [E5],
         [D5], [C_SHARP_5],
-        [ObjectiveNote(D5, duration_in_beats=2)], [],
+        [Note(D5, duration_in_beats=2)], [],
         [B_FROM_D_4], [C_SHARP_5],
-        [ObjectiveNote(D5, duration_in_beats=2)], [],
+        [Note(D5, duration_in_beats=2)], [],
         [D4], [E4], # ?
         [F_SHARP_4], [G4],
         [F_SHARP_4], [E4],
         [F_SHARP_4], [D5],
         [C_SHARP_5], [D5],
-        [ObjectiveNote(B_FROM_D_4, duration_in_beats=2)], [],
+        [Note(B_FROM_D_4, duration_in_beats=2)], [],
         [D5], [C_SHARP_5],
-        [ObjectiveNote(B_FROM_D_4, duration_in_beats=2)], [],
+        [Note(B_FROM_D_4, duration_in_beats=2)], [],
         [A4], [G4],
         [A4], [G4],
         [F_SHARP_4], [G4],
         [A4], [B_FROM_D_4],
         [C_SHARP_5], [D5],
-        [ObjectiveNote(B_FROM_E_4, duration_in_beats=2)], [],
+        [Note(B_FROM_E_4, duration_in_beats=2)], [],
         [D5], [C_SHARP_5],
-        [ObjectiveNote(D5, duration_in_beats=2)], [],
+        [Note(D5, duration_in_beats=2)], [],
         [C_SHARP_5], [B_FROM_D_4],
         [C_SHARP_5], [D5],
         [E5], [D5],
@@ -242,7 +242,7 @@ violin_5 = ObjectiveMelody(
     ],
 )
 
-violin_6 = ObjectiveMelody(
+violin_6 = Melody(
     SAMPLES_PER_THIRTY_SECOND_NOTE << 2,
     [
         [D5], [],
@@ -264,7 +264,7 @@ violin_6 = ObjectiveMelody(
     ]
 )
 
-violin_7_1_3 = ObjectiveMelody(
+violin_7_1_3 = Melody(
     SAMPLES_PER_THIRTY_SECOND_NOTE << 1,
     [
         [F_SHARP_5], [F_SHARP_4], [G4], [F_SHARP_4],
@@ -278,7 +278,7 @@ violin_7_1_3 = ObjectiveMelody(
     ],
 )
 
-violin_7_2 = ObjectiveMelody(
+violin_7_2 = Melody(
     SAMPLES_PER_THIRTY_SECOND_NOTE << 1,
     [
         [F_SHARP_5], [F_SHARP_4], [G4], [F_SHARP_4],
@@ -292,7 +292,7 @@ violin_7_2 = ObjectiveMelody(
     ],
 )
 
-violin_8_1 = ObjectiveMelody(
+violin_8_1 = Melody(
     SAMPLES_PER_THIRTY_SECOND_NOTE << 1,
     [
         [D4], [D5], [E5], [D5],
@@ -307,7 +307,7 @@ violin_8_1 = ObjectiveMelody(
     ],
 )
 
-violin_8_2_3 = ObjectiveMelody(
+violin_8_2_3 = Melody(
     SAMPLES_PER_THIRTY_SECOND_NOTE << 1,
     [
         [D4], [D5], [E5], [D5],
@@ -322,7 +322,7 @@ violin_8_2_3 = ObjectiveMelody(
     ],
 )
 
-violin_9 = ObjectiveMelody(
+violin_9 = Melody(
     SAMPLES_PER_THIRTY_SECOND_NOTE << 1,
     [
         [F_SHARP_4], [A4], [A4], [A4],
@@ -337,7 +337,7 @@ violin_9 = ObjectiveMelody(
     ],
 )
 
-violin_10_1 = ObjectiveMelody(
+violin_10_1 = Melody(
     SAMPLES_PER_THIRTY_SECOND_NOTE << 1,
     [
         [A4], [F_SHARP_5], [F_SHARP_5], [F_SHARP_5],
@@ -351,7 +351,7 @@ violin_10_1 = ObjectiveMelody(
     ]
 )
 
-violin_10_2_3 = ObjectiveMelody(
+violin_10_2_3 = Melody(
     SAMPLES_PER_THIRTY_SECOND_NOTE << 1,
     [
         [A4], [F_SHARP_5], [F_SHARP_5], [F_SHARP_5],
@@ -365,159 +365,159 @@ violin_10_2_3 = ObjectiveMelody(
     ]
 )
 
-violin_11 = ObjectiveMelody(
+violin_11 = Melody(
     SAMPLES_PER_THIRTY_SECOND_NOTE,
     [
-        [ObjectiveNote(D5, duration_in_beats=2)], [], [D4], [E4],
-        [ObjectiveNote(F_SHARP_4, duration_in_beats=2)], [], [ObjectiveNote(D4, duration_in_beats=2)], [],
-        [ObjectiveNote(C_SHARP_4, duration_in_beats=2)], [], [C_SHARP_5], [D5],
-        [ObjectiveNote(E5, duration_in_beats=2)], [], [ObjectiveNote(C_SHARP_5, duration_in_beats=2)], [],
-        [ObjectiveNote(B_FROM_D_4, duration_in_beats=2)], [], [B_FROM_D_3], [C_SHARP_4],
-        [ObjectiveNote(D4, duration_in_beats=2)], [], [ObjectiveNote(B_FROM_D_3, duration_in_beats=2)], [],
-        [ObjectiveNote(C_SHARP_4, duration_in_beats=2)], [], [A4], [G4],
-        [ObjectiveNote(F_SHARP_4, duration_in_beats=2)], [], [ObjectiveNote(E4, duration_in_beats=2)], [],
+        [Note(D5, duration_in_beats=2)], [], [D4], [E4],
+        [Note(F_SHARP_4, duration_in_beats=2)], [], [Note(D4, duration_in_beats=2)], [],
+        [Note(C_SHARP_4, duration_in_beats=2)], [], [C_SHARP_5], [D5],
+        [Note(E5, duration_in_beats=2)], [], [Note(C_SHARP_5, duration_in_beats=2)], [],
+        [Note(B_FROM_D_4, duration_in_beats=2)], [], [B_FROM_D_3], [C_SHARP_4],
+        [Note(D4, duration_in_beats=2)], [], [Note(B_FROM_D_3, duration_in_beats=2)], [],
+        [Note(C_SHARP_4, duration_in_beats=2)], [], [A4], [G4],
+        [Note(F_SHARP_4, duration_in_beats=2)], [], [Note(E4, duration_in_beats=2)], [],
 
-        [ObjectiveNote(D4, duration_in_beats=2)], [], [G4], [F_SHARP_4],
-        [ObjectiveNote(E4, duration_in_beats=2)], [], [ObjectiveNote(G4, duration_in_beats=2)], [], # ?
-        [ObjectiveNote(F_SHARP_4, duration_in_beats=2)], [], [D4], [E4],
-        [ObjectiveNote(F_SHARP_4, duration_in_beats=2)], [], [ObjectiveNote(A4, duration_in_beats=2)], [],
-        [ObjectiveNote(G4, duration_in_beats=2)], [], [B_FROM_D_4], [A4],
-        [ObjectiveNote(G4, duration_in_beats=2)], [], [ObjectiveNote(F_SHARP_4, duration_in_beats=2)], [],
-        [ObjectiveNote(E4, duration_in_beats=2)], [], [A4], [G4], # ?
-        [ObjectiveNote(F_SHARP_4, duration_in_beats=2)], [], [ObjectiveNote(E4, duration_in_beats=2)], [],
+        [Note(D4, duration_in_beats=2)], [], [G4], [F_SHARP_4],
+        [Note(E4, duration_in_beats=2)], [], [Note(G4, duration_in_beats=2)], [], # ?
+        [Note(F_SHARP_4, duration_in_beats=2)], [], [D4], [E4],
+        [Note(F_SHARP_4, duration_in_beats=2)], [], [Note(A4, duration_in_beats=2)], [],
+        [Note(G4, duration_in_beats=2)], [], [B_FROM_D_4], [A4],
+        [Note(G4, duration_in_beats=2)], [], [Note(F_SHARP_4, duration_in_beats=2)], [],
+        [Note(E4, duration_in_beats=2)], [], [A4], [G4], # ?
+        [Note(F_SHARP_4, duration_in_beats=2)], [], [Note(E4, duration_in_beats=2)], [],
 
-        [ObjectiveNote(F_SHARP_4, duration_in_beats=2)], [], [D5], [C_SHARP_5],
-        [ObjectiveNote(D5, duration_in_beats=2)], [], [ObjectiveNote(F_SHARP_4, duration_in_beats=2)], [],
-        [ObjectiveNote(A4, duration_in_beats=2)], [], [A4], [B_FROM_D_4],
-        [ObjectiveNote(C_SHARP_5, duration_in_beats=2)], [], [ObjectiveNote(A4, duration_in_beats=2)], [],
-        [ObjectiveNote(F_SHARP_4, duration_in_beats=2)], [], [D5], [E5], # ?
-        [ObjectiveNote(F_SHARP_5, duration_in_beats=2)], [], [ObjectiveNote(D5, duration_in_beats=2)], [],
-        [ObjectiveNote(F_SHARP_5, duration_in_beats=2)], [], [F_SHARP_5], [E5],
-        [ObjectiveNote(D5, duration_in_beats=2)], [], [ObjectiveNote(C_SHARP_5, duration_in_beats=2)], [],
+        [Note(F_SHARP_4, duration_in_beats=2)], [], [D5], [C_SHARP_5],
+        [Note(D5, duration_in_beats=2)], [], [Note(F_SHARP_4, duration_in_beats=2)], [],
+        [Note(A4, duration_in_beats=2)], [], [A4], [B_FROM_D_4],
+        [Note(C_SHARP_5, duration_in_beats=2)], [], [Note(A4, duration_in_beats=2)], [],
+        [Note(F_SHARP_4, duration_in_beats=2)], [], [D5], [E5], # ?
+        [Note(F_SHARP_5, duration_in_beats=2)], [], [Note(D5, duration_in_beats=2)], [],
+        [Note(F_SHARP_5, duration_in_beats=2)], [], [F_SHARP_5], [E5],
+        [Note(D5, duration_in_beats=2)], [], [Note(C_SHARP_5, duration_in_beats=2)], [],
 
-        [ObjectiveNote(B_FROM_D_4, duration_in_beats=2)], [], [B_FROM_D_4], [A4],
-        [ObjectiveNote(B_FROM_D_4, duration_in_beats=2)], [], [ObjectiveNote(C_SHARP_5, duration_in_beats=2)], [], # ?
-        [ObjectiveNote(D5, duration_in_beats=2)], [], [F_SHARP_5], [E5],
-        [ObjectiveNote(D5, duration_in_beats=2)], [], [ObjectiveNote(F_SHARP_5, duration_in_beats=2)], [],
-        [ObjectiveNote(G5, duration_in_beats=2)], [], [D5], [C_SHARP_5],
-        [ObjectiveNote(B_FROM_D_4, duration_in_beats=2)], [], [ObjectiveNote(B_FROM_D_4, duration_in_beats=2)], [],
-        [ObjectiveNote(A4, duration_in_beats=2)], [], [ObjectiveNote(E4, duration_in_beats=2)], [],
-        [ObjectiveNote(A4, duration_in_beats=2)], [], [ObjectiveNote(A4, duration_in_beats=2)], [],
+        [Note(B_FROM_D_4, duration_in_beats=2)], [], [B_FROM_D_4], [A4],
+        [Note(B_FROM_D_4, duration_in_beats=2)], [], [Note(C_SHARP_5, duration_in_beats=2)], [], # ?
+        [Note(D5, duration_in_beats=2)], [], [F_SHARP_5], [E5],
+        [Note(D5, duration_in_beats=2)], [], [Note(F_SHARP_5, duration_in_beats=2)], [],
+        [Note(G5, duration_in_beats=2)], [], [D5], [C_SHARP_5],
+        [Note(B_FROM_D_4, duration_in_beats=2)], [], [Note(B_FROM_D_4, duration_in_beats=2)], [],
+        [Note(A4, duration_in_beats=2)], [], [Note(E4, duration_in_beats=2)], [],
+        [Note(A4, duration_in_beats=2)], [], [Note(A4, duration_in_beats=2)], [],
     ],
 )
 
-violin_12_1 = ObjectiveMelody(
+violin_12_1 = Melody(
     SAMPLES_PER_THIRTY_SECOND_NOTE << 1,
     [
-        [ObjectiveNote(A4, duration_in_beats=6)], [], [], [],
-        [], [], [ObjectiveNote(A4, duration_in_beats=2)], [],
-        [ObjectiveNote(D4, duration_in_beats=6)], [], [], [],
-        [], [], [ObjectiveNote(A4, duration_in_beats=2)], [],
+        [Note(A4, duration_in_beats=6)], [], [], [],
+        [], [], [Note(A4, duration_in_beats=2)], [],
+        [Note(D4, duration_in_beats=6)], [], [], [],
+        [], [], [Note(A4, duration_in_beats=2)], [],
 
-        [ObjectiveNote(G4, duration_in_beats=4)], [], [], [],
-        [ObjectiveNote(A4, duration_in_beats=4)], [], [], [],
-        [ObjectiveNote(F_SHARP_4, duration_in_beats=2)], [], [ObjectiveNote(D4, duration_in_beats=2)], [],
-        [ObjectiveNote(D4, duration_in_beats=3)], [], [], [C_SHARP_4],
+        [Note(G4, duration_in_beats=4)], [], [], [],
+        [Note(A4, duration_in_beats=4)], [], [], [],
+        [Note(F_SHARP_4, duration_in_beats=2)], [], [Note(D4, duration_in_beats=2)], [],
+        [Note(D4, duration_in_beats=3)], [], [], [C_SHARP_4],
     ],
 )
 
-violin_12_2_3 = ObjectiveMelody(
+violin_12_2_3 = Melody(
     SAMPLES_PER_THIRTY_SECOND_NOTE << 1,
     [
-        [ObjectiveNote(A4, duration_in_beats=6)], [], [], [],
-        [], [], [ObjectiveNote(A4, duration_in_beats=2)], [],
-        [ObjectiveNote(D4, duration_in_beats=6)], [], [], [],
-        [], [], [ObjectiveNote(A4, duration_in_beats=2)], [],
+        [Note(A4, duration_in_beats=6)], [], [], [],
+        [], [], [Note(A4, duration_in_beats=2)], [],
+        [Note(D4, duration_in_beats=6)], [], [], [],
+        [], [], [Note(A4, duration_in_beats=2)], [],
 
-        [ObjectiveNote(G4, duration_in_beats=4)], [], [], [],
-        [ObjectiveNote(A4, duration_in_beats=4)], [], [], [],
-        [ObjectiveNote(G4, duration_in_beats=2)], [], [ObjectiveNote(D4, duration_in_beats=2)], [],
-        [ObjectiveNote(D4, duration_in_beats=3)], [], [], [C_SHARP_4],
+        [Note(G4, duration_in_beats=4)], [], [], [],
+        [Note(A4, duration_in_beats=4)], [], [], [],
+        [Note(G4, duration_in_beats=2)], [], [Note(D4, duration_in_beats=2)], [],
+        [Note(D4, duration_in_beats=3)], [], [], [C_SHARP_4],
     ],
 )
 
-violin_13 = ObjectiveMelody(
+violin_13 = Melody(
     SAMPLES_PER_THIRTY_SECOND_NOTE << 1,
     [
-        [ObjectiveNote(D4, duration_in_beats=2)], [], [ObjectiveNote(D5, duration_in_beats=2)], [],
-        [ObjectiveNote(C_SHARP_5, duration_in_beats=4)], [], [], [],
-        [ObjectiveNote(B_FROM_D_4, duration_in_beats=4)], [], [], [],
-        [ObjectiveNote(A4, duration_in_beats=4)], [], [], [],
+        [Note(D4, duration_in_beats=2)], [], [Note(D5, duration_in_beats=2)], [],
+        [Note(C_SHARP_5, duration_in_beats=4)], [], [], [],
+        [Note(B_FROM_D_4, duration_in_beats=4)], [], [], [],
+        [Note(A4, duration_in_beats=4)], [], [], [],
 
-        [ObjectiveNote(D4, duration_in_beats=3)], [], [], [E4],
-        [ObjectiveNote(F_SHARP_4, duration_in_beats=2)], [], [], [],
-        [ObjectiveNote(B_FROM_D_4, duration_in_beats=4)], [], [], [],
-        [ObjectiveNote(E4, duration_in_beats=3)], [], [], [E4],
+        [Note(D4, duration_in_beats=3)], [], [], [E4],
+        [Note(F_SHARP_4, duration_in_beats=2)], [], [], [],
+        [Note(B_FROM_D_4, duration_in_beats=4)], [], [], [],
+        [Note(E4, duration_in_beats=3)], [], [], [E4],
 
         # 2
 
-        [ObjectiveNote(F_SHARP_4, duration_in_beats=3)], [], [], [F_SHARP_5],
+        [Note(F_SHARP_4, duration_in_beats=3)], [], [], [F_SHARP_5],
         [F_SHARP_5], [G5], [F_SHARP_5], [E4],
-        [ObjectiveNote(D5, duration_in_beats=3)], [], [], [D5],
+        [Note(D5, duration_in_beats=3)], [], [], [D5],
         [D5], [E4], [D5], [C_SHARP_5],
 
-        [ObjectiveNote(B_FROM_D_4, duration_in_beats=4)], [], [], [],
-        [ObjectiveNote(D5, duration_in_beats=4)], [], [], [],
+        [Note(B_FROM_D_4, duration_in_beats=4)], [], [], [],
+        [Note(D5, duration_in_beats=4)], [], [], [],
         [D5], [C5], [B_FROM_D_4], [C5],
-        [ObjectiveNote(A4, duration_in_beats=3)], [], [], [A4],
+        [Note(A4, duration_in_beats=3)], [], [], [A4],
 
         # 3
 
-        [ObjectiveNote(A4, duration_in_beats=3)], [], [], [A5],
+        [Note(A4, duration_in_beats=3)], [], [], [A5],
         [A5], [B_FROM_D_5], [A5], [G5],
-        [ObjectiveNote(F_SHARP_5, duration_in_beats=3)], [], [], [F_SHARP_5],
+        [Note(F_SHARP_5, duration_in_beats=3)], [], [], [F_SHARP_5],
         [F_SHARP_5], [G5], [F_SHARP_5], [E4],
 
         [D5], [C5], [B_FROM_D_4], [C5],
-        [ObjectiveNote(A4, duration_in_beats=3)], [], [], [A4],
-        [ObjectiveNote(G4, duration_in_beats=2)], [], [ObjectiveNote(D5, duration_in_beats=2)], [],
-        [ObjectiveNote(C_SHARP_5, duration_in_beats=3)], [], [], [C_SHARP_5],
+        [Note(A4, duration_in_beats=3)], [], [], [A4],
+        [Note(G4, duration_in_beats=2)], [], [Note(D5, duration_in_beats=2)], [],
+        [Note(C_SHARP_5, duration_in_beats=3)], [], [], [C_SHARP_5],
 
         # 4
 
-        [ObjectiveNote(D5, duration_in_beats=2)], [], [ObjectiveNote(D5, duration_in_beats=4)], [],
-        [], [], [ObjectiveNote(C_SHARP_5, duration_in_beats=4)], [],
-        [], [], [ObjectiveNote(B_FROM_D_4, duration_in_beats=4)], [],
-        [], [], [ObjectiveNote(A4, duration_in_beats=4)], [],
+        [Note(D5, duration_in_beats=2)], [], [Note(D5, duration_in_beats=4)], [],
+        [], [], [Note(C_SHARP_5, duration_in_beats=4)], [],
+        [], [], [Note(B_FROM_D_4, duration_in_beats=4)], [],
+        [], [], [Note(A4, duration_in_beats=4)], [],
 
-        [], [], [ObjectiveNote(G4, duration_in_beats=4)], [],
-        [], [], [ObjectiveNote(F_SHARP_4, duration_in_beats=5)], [],
+        [], [], [Note(G4, duration_in_beats=4)], [],
+        [], [], [Note(F_SHARP_4, duration_in_beats=5)], [],
         [], [], [], [E4], # ?
-        [ObjectiveNote(E4, duration_in_beats=4)], [], [], [],
+        [Note(E4, duration_in_beats=4)], [], [], [],
     ],
 )
 
-violin_14 = ObjectiveMelody(
+violin_14 = Melody(
     SAMPLES_PER_THIRTY_SECOND_NOTE << 2,
     [
-        [F_SHARP_4], [ObjectiveNote(F_SHARP_5, duration_in_beats=2)],
+        [F_SHARP_4], [Note(F_SHARP_5, duration_in_beats=2)],
         [], [E5],
-        [D5], [ObjectiveNote(D6, duration_in_beats=2)],
+        [D5], [Note(D6, duration_in_beats=2)],
         [], [C6],
 
-        [ObjectiveNote(B_FROM_D_5, duration_in_beats=2)], [],
+        [Note(B_FROM_D_5, duration_in_beats=2)], [],
         [D6], [A5],
-        [ObjectiveNote(B_FROM_D_5, duration_in_beats=2)], [],
-        [ObjectiveNote(A5, duration_in_beats=2)], [],
+        [Note(B_FROM_D_5, duration_in_beats=2)], [],
+        [Note(A5, duration_in_beats=2)], [],
     ],
 )
 
-violin_15 = ObjectiveMelody(
+violin_15 = Melody(
     SAMPLES_PER_THIRTY_SECOND_NOTE << 1,
     [
-        [ObjectiveNote(A5, duration_in_beats=4)], [], [], [],
-        [ObjectiveNote(A4, duration_in_beats=3)], [], [], [G4],
-        [ObjectiveNote(F_SHARP_4, duration_in_beats=4)], [], [], [],
-        [ObjectiveNote(F_SHARP_5, duration_in_beats=3)], [], [], [E5],
+        [Note(A5, duration_in_beats=4)], [], [], [],
+        [Note(A4, duration_in_beats=3)], [], [], [G4],
+        [Note(F_SHARP_4, duration_in_beats=4)], [], [], [],
+        [Note(F_SHARP_5, duration_in_beats=3)], [], [], [E5],
 
-        [ObjectiveNote(D5, duration_in_beats=6)], [], [], [],
-        [], [], [ObjectiveNote(D5, duration_in_beats=2)], [],
-        [ObjectiveNote(D5, duration_in_beats=4)], [], [], [],
-        [ObjectiveNote(C_SHARP_5, duration_in_beats=4)], [], [], [],
+        [Note(D5, duration_in_beats=6)], [], [], [],
+        [], [], [Note(D5, duration_in_beats=2)], [],
+        [Note(D5, duration_in_beats=4)], [], [], [],
+        [Note(C_SHARP_5, duration_in_beats=4)], [], [], [],
     ],
 )
 
-violin_16_1_2 = ObjectiveMelody(
+violin_16_1_2 = Melody(
     SAMPLES_PER_THIRTY_SECOND_NOTE << 2,
     [
         [D5], [D4],
@@ -532,25 +532,25 @@ violin_16_1_2 = ObjectiveMelody(
     ],
 )
 
-violin_17_1 = ObjectiveMelody(
+violin_17_1 = Melody(
     SAMPLES_PER_THIRTY_SECOND_NOTE << 1,
     [
-        [ObjectiveNote(F_SHARP_5, duration_in_beats=2)], [], [ObjectiveNote(F_SHARP_4, duration_in_beats=2)], [],
-        [ObjectiveNote(E4, duration_in_beats=2)], [], [ObjectiveNote(E5, duration_in_beats=2)], [],
-        [ObjectiveNote(D5, duration_in_beats=2)], [], [ObjectiveNote(D4, duration_in_beats=2)], [],
-        [ObjectiveNote(C_SHARP_4, duration_in_beats=2)], [], [ObjectiveNote(C_SHARP_5, duration_in_beats=2)], [],
+        [Note(F_SHARP_5, duration_in_beats=2)], [], [Note(F_SHARP_4, duration_in_beats=2)], [],
+        [Note(E4, duration_in_beats=2)], [], [Note(E5, duration_in_beats=2)], [],
+        [Note(D5, duration_in_beats=2)], [], [Note(D4, duration_in_beats=2)], [],
+        [Note(C_SHARP_4, duration_in_beats=2)], [], [Note(C_SHARP_5, duration_in_beats=2)], [],
 
-        [ObjectiveNote(B_FROM_D_4, duration_in_beats=2)], [], [ObjectiveNote(B_FROM_D_5, duration_in_beats=2)], [],
-        [ObjectiveNote(A5, duration_in_beats=2)], [], [ObjectiveNote(A4, duration_in_beats=2)], [],
-        [ObjectiveNote(G5, duration_in_beats=3)], [], [], [E5], # ?
-        [ObjectiveNote(A4, duration_in_beats=2)], [], [ObjectiveNote(A4, duration_in_beats=2)], [],
+        [Note(B_FROM_D_4, duration_in_beats=2)], [], [Note(B_FROM_D_5, duration_in_beats=2)], [],
+        [Note(A5, duration_in_beats=2)], [], [Note(A4, duration_in_beats=2)], [],
+        [Note(G5, duration_in_beats=3)], [], [], [E5], # ?
+        [Note(A4, duration_in_beats=2)], [], [Note(A4, duration_in_beats=2)], [],
     ],
 )
 
-end = ObjectiveMelody(
+end = Melody(
     SAMPLES_PER_THIRTY_SECOND_NOTE << 3,
     [
-        [ObjectiveNote(D3, BASS_VOICE), A4, F_SHARP_5, D5],
+        [Note(D3, BASS_VOICE), A4, F_SHARP_5, D5],
     ],
 )
 

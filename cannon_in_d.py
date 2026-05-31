@@ -65,7 +65,7 @@ THIRTY_SECOND_NOTES_PER_MINUTE = QUARTER_NOTES_PER_MINUTE * 8
 SAMPLES_PER_MINUTE = SAMPLE_RATE * 60
 SAMPLES_PER_BEAT = SAMPLES_PER_MINUTE // THIRTY_SECOND_NOTES_PER_MINUTE
 
-intro_bass: ObjectiveMelody = ObjectiveMelody(
+intro_bass: Melody = Melody(
     SAMPLES_PER_BEAT << 1,
     [
         [D3],
@@ -110,7 +110,7 @@ intro_bass: ObjectiveMelody = ObjectiveMelody(
     ] * 2
 )
 
-bass = ObjectiveMelody(
+bass = Melody(
     SAMPLES_PER_BEAT << 1,
     [
         [D3],
@@ -155,7 +155,7 @@ bass = ObjectiveMelody(
     ]
 )
 
-melody = ObjectiveMelody(
+melody = Melody(
     SAMPLES_PER_BEAT,
     [
         [D3],

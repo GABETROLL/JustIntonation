@@ -346,7 +346,7 @@ main_melody = [
     (), (),
 ]
 
-third_hand = ObjectiveMelody(
+third_hand = Melody(
     BEATS_PER_MINUTE,
     [
         # 6
@@ -609,14 +609,14 @@ third_hand = ObjectiveMelody(
         (F5,), (F_SHARP_FROM_B_5,),
         (G5,), (G_SHARP_FROM_E_5,),
 
-        (ObjectiveNote(A5, duration_in_beats=2),), (),
-        (ObjectiveNote(C6, duration_in_beats=2),), (),
-        (ObjectiveNote(C6, duration_in_beats=2),), (),
-        (ObjectiveNote(E6, duration_in_beats=2),), (),
-        (ObjectiveNote(D_SHARP_FROM_B_6, duration_in_beats=2),), (),
-        (ObjectiveNote(C_SHARP_FROM_F_SHARP_6, duration_in_beats=2),),  (),
-        (ObjectiveNote(C6, duration_in_beats=2),), (),
-        (ObjectiveNote(B5, duration_in_beats=2),), (),
+        (Note(A5, duration_in_beats=2),), (),
+        (Note(C6, duration_in_beats=2),), (),
+        (Note(C6, duration_in_beats=2),), (),
+        (Note(E6, duration_in_beats=2),), (),
+        (Note(D_SHARP_FROM_B_6, duration_in_beats=2),), (),
+        (Note(C_SHARP_FROM_F_SHARP_6, duration_in_beats=2),),  (),
+        (Note(C6, duration_in_beats=2),), (),
+        (Note(B5, duration_in_beats=2),), (),
 
         (A_SHARP_FROM_F_SHARP_5,), (A5,),
         (G_SHARP_FROM_E_5,), (G5,),
@@ -627,19 +627,19 @@ third_hand = ObjectiveMelody(
         (C6,), (C_SHARP_FROM_F_SHARP_6,),
         (D_FROM_G_6,), (D_SHARP_FROM_B_6,),
 
-        (ObjectiveNote(E6, duration_in_beats=2),), (),
-        (ObjectiveNote(F6, duration_in_beats=2),), (),
-        (ObjectiveNote(F6, duration_in_beats=2),), (),
-        (ObjectiveNote(G6, duration_in_beats=2),), (),
-        (ObjectiveNote(G6, duration_in_beats=2),), (),
-        (ObjectiveNote(F6, duration_in_beats=2),), (),
-        (ObjectiveNote(E6, duration_in_beats=2),), (),
-        (ObjectiveNote(D_FROM_G_6, duration_in_beats=2),), (),
+        (Note(E6, duration_in_beats=2),), (),
+        (Note(F6, duration_in_beats=2),), (),
+        (Note(F6, duration_in_beats=2),), (),
+        (Note(G6, duration_in_beats=2),), (),
+        (Note(G6, duration_in_beats=2),), (),
+        (Note(F6, duration_in_beats=2),), (),
+        (Note(E6, duration_in_beats=2),), (),
+        (Note(D_FROM_G_6, duration_in_beats=2),), (),
 
-        (ObjectiveNote(C_SHARP_FROM_F_SHARP_6, duration_in_beats=2),), (),
-        (ObjectiveNote(C6, duration_in_beats=2),), (),
-        (ObjectiveNote(B5, duration_in_beats=2),), (),
-        (ObjectiveNote(A_SHARP_FROM_F_SHARP_5, duration_in_beats=2),), (),
+        (Note(C_SHARP_FROM_F_SHARP_6, duration_in_beats=2),), (),
+        (Note(C6, duration_in_beats=2),), (),
+        (Note(B5, duration_in_beats=2),), (),
+        (Note(A_SHARP_FROM_F_SHARP_5, duration_in_beats=2),), (),
         (), (),
         (), (),
         (), (),
@@ -676,7 +676,7 @@ third_hand = ObjectiveMelody(
     ],
 )
 
-melody_1 = ObjectiveMelody(
+melody_1 = Melody(
     BEATS_PER_MINUTE,
     [
         notes((G1, G2,     E4, C5), duration_in_beats=2), (),
@@ -688,7 +688,7 @@ melody_1 = ObjectiveMelody(
     ]
 )
 
-melody_2 = ObjectiveMelody(
+melody_2 = Melody(
     BEATS_PER_MINUTE,
     [
         # 5 - 8
