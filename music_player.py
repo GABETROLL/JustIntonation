@@ -260,7 +260,9 @@ def render_wave(
 
     # print(f"result: {result.shape}, one_hertz_wave: {one_hertz_wave.shape}")
 
-    note_values: dict[int, Union[int, float]] = {}
+    note_values: dict[int, Union[int, Fraction]] = {}
+    """This should be the dictionary of integer Note ids, and their frequency values,
+    which SHOULD be either integers or Fractions."""
 
     def _render_wave(list_of_beats: Sequence[Sequence[Hertz | Note | Slide | Fraction | Sequence]], samples_per_beat_rounded: int, sample_index: int):
         for beat_index, beat in enumerate(list_of_beats):
@@ -295,7 +297,15 @@ def render_wave(
                             # should handle it.
                             frequency = note.frequency
 
-                    note_values[note.id] = frequency
+                    # CHECKING THAT `note.id` iS NOT ALREADY PRESENT IN `note_values`,
+                    # TO PREVENT ASSIGNING ANOTHER VALUE TO THE SAME ID IN THE DICTIONARY:
+                    if note.id in note_values:
+                        raise KeyError(f"Note id {note.id} already present in `note_values` dictionary!")
+
+                    # This SHOULD be either an int or a Fraction.
+                    # (TODO: is it?)
+                    if note.id is not None:
+                        note_values[note.id] = frequency
 
                     if note.voice is not None:
                         voice = note.voice
@@ -326,7 +336,9 @@ def render_wave(
 
                 # beat_wave: numpy.ndarray = one_hertz_wave[::samples_per_frequency]
 
-                # print(f"Difference: {end_sample_index - start_sample_index}")
+                print(f"{start_sample_index = }, {end_sample_index = }, len(domain) = {len(domain)}, len(beat_wave) = {len(beat_wave)}")
+                print(f"{domain.shape = }, {beat_wave.shape = }")
+                print(f"Difference: {end_sample_index - start_sample_index}")
                 # print(f"one_hertz_wave: {one_hertz_wave.shape}, beat_wave: {beat_wave.shape}")
                 # print(f"range: {len(range(start_sample_index * frequency, end_sample_index * frequency, frequency))}")
 
